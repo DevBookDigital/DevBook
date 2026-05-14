@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBook — The API Workbench for Developers</title>
+    <meta name="description" content="DevBook is the modern API workbench developers actually use. No seat licensing. No bloated desktop app. API key vault, template builder, and split-screen response viewer — in your browser.">
+    <meta name="keywords" content="api testing tool, api workbench, free api client, api key manager, http client, postman alternative">
+    <link rel="canonical" href="https://devbook.digital">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="DevBook — The API Workbench for Developers">
+    <meta property="og:description" content="Modern API workbench with API key vault, template builder, and split-screen response viewer — all in your browser.">
+    <meta property="og:url" content="https://devbook.digital">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DevBook">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DevBook — The API Workbench for Developers">
+    <meta name="twitter:description" content="Modern API testing that gets out of your way.">
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "DevBook",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Modern API workbench for developers. API key vault, template builder with fillable fields, and split-screen response viewer — all in your browser.",
+      "url": "https://devbook.digital",
+      "featureList": [
+        "API key vault",
+        "Template builder with fillable fields",
+        "Split-screen response viewer",
+        "No installation required",
+        "Free forever"
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #22d68a;
+            --accent-dim: #1a9e66;
+            --accent-glow: rgba(34, 214, 138, 0.15);
+            --orange: #ff8c42;
+            --purple: #a78bfa;
+            --red: #f87171;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--bg);
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.35rem;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .btn-primary:hover { background: var(--accent-dim); transform: translateY(-1px); }
+
+        .btn-primary.lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 5rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            font-size: clamp(2.6rem, 6.5vw, 5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            max-width: 880px;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        h1 .highlight { color: var(--accent); }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 3.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero-cta-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hero-cta-note strong { color: var(--accent); }
+
+        /* ── Mock UI ── */
+        .mock-window {
+            width: 100%;
+            max-width: 780px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+        }
+
+        .mock-titlebar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 18px;
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mock-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border); }
+        .mock-dot:nth-child(1) { background: #ff5f57; }
+        .mock-dot:nth-child(2) { background: #ffbd2e; }
+        .mock-dot:nth-child(3) { background: #28c840; }
+
+        .mock-url {
+            margin-left: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .mock-split { display: grid; grid-template-rows: 1fr auto 1fr; min-height: 340px; }
+        .mock-top { padding: 1.25rem; }
+
+        .mock-method-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .mock-method {
+            background: var(--accent);
+            color: var(--bg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+        }
+
+        .mock-url-field {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.4rem 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .mock-send {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 0.4rem 1.25rem;
+            border-radius: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: default;
+        }
+
+        .mock-fields { display: flex; flex-direction: column; gap: 0.6rem; }
+
+        .mock-field-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .mock-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--orange);
+            min-width: 90px;
+        }
+
+        .mock-input {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.35rem 0.65rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text);
+        }
+
+        .mock-divider {
+            height: 1px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .mock-divider-label {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--surface);
+            padding: 0 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mock-bottom {
+            padding: 1.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .mock-bottom .status { color: var(--accent); font-weight: 500; }
+        .mock-bottom .key { color: var(--purple); }
+        .mock-bottom .str { color: var(--orange); }
+
+        /* ── Sections ── */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.9rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 3.5rem;
+            line-height: 1.7;
+        }
+
+        /* ── Pain points ── */
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .pain-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .pain-card:hover { border-color: var(--accent-dim); }
+
+        .pain-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1.25rem;
+            background: rgba(248, 113, 113, 0.12);
+        }
+
+        .pain-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.3px;
+        }
+
+        .pain-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Feature highlights ── */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .feature {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .feature:hover { border-color: var(--accent-dim); }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-glow);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .feature h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Comparison table ── */
+        .comparison-wrap {
+            overflow-x: auto;
+            margin-top: 3.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            min-width: 580px;
+        }
+
+        thead tr {
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        thead th {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        thead th:first-child { color: var(--text-muted); }
+
+        thead th.highlight-col {
+            color: var(--accent);
+            background: rgba(34, 214, 138, 0.06);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: var(--surface); }
+
+        tbody td {
+            padding: 0.9rem 1.25rem;
+            color: var(--text-muted);
+            vertical-align: middle;
+        }
+
+        tbody td:first-child {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        tbody td.highlight-col {
+            color: var(--text);
+            background: rgba(34, 214, 138, 0.04);
+        }
+
+        .check { color: var(--accent); font-size: 1.1rem; }
+        .cross { color: var(--red); font-size: 1.1rem; }
+        .partial { color: var(--orange); font-size: 1.1rem; }
+
+        /* ── How it works ── */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .step:hover { border-color: var(--accent-dim); }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: var(--accent-glow);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+        }
+
+        .step h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+            letter-spacing: -0.2px;
+        }
+
+        .step p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Closing CTA ── */
+        .closing {
+            text-align: center;
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .closing::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .closing h2 {
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            max-width: 700px;
+            margin: 0 auto 1.25rem;
+            position: relative;
+        }
+
+        .closing p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto 2.5rem;
+            position: relative;
+        }
+
+        .closing-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1.25rem;
+            position: relative;
+        }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a { color: var(--accent); }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.25rem; }
+            .hero { padding: 7rem 1.25rem 4rem; }
+            .section { padding: 4rem 1.25rem; }
+            h1 { letter-spacing: -1px; }
+            .pain-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; }
+            .features { grid-template-columns: 1fr; }
+            .mock-method-bar { flex-wrap: wrap; }
+            .mock-url-field { min-width: 0; }
+            .hero-cta-group { flex-direction: column; gap: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Nav ── -->
+    <nav>
+        <div class="logo">
+            <div class="logo-mark">D</div>
+            DevBook
+        </div>
+        <a href="/login" class="btn-primary">Start your 2-week free trial →</a>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            2-week free trial — no credit card required
+        </div>
+        <h1>The API workbench that <span class="highlight">doesn't waste your time</span></h1>
+        <p class="hero-sub">Store your keys once. Build request templates with fillable fields. Get answers in a clean split-screen interface. No $14/seat pricing. No download.</p>
+
+        <div class="hero-cta-group">
+            <a href="/login" class="btn-primary lg">Start your 2-week free trial →</a>
+            <span class="hero-cta-note"><strong>No credit card required</strong> &mdash; start in 30 seconds</span>
+        </div>
+
+        <div class="mock-window">
+            <div class="mock-titlebar">
+                <div class="mock-dot"></div>
+                <div class="mock-dot"></div>
+                <div class="mock-dot"></div>
+                <span class="mock-url">devbook / OpenAI Chat Completion</span>
+            </div>
+            <div class="mock-split">
+                <div class="mock-top">
+                    <div class="mock-method-bar">
+                        <span class="mock-method">POST</span>
+                        <div class="mock-url-field">https://api.openai.com/v1/chat/completions</div>
+                        <span class="mock-send">Send</span>
+                    </div>
+                    <div class="mock-fields">
+                        <div class="mock-field-row">
+                            <span class="mock-label">{{model}}</span>
+                            <span class="mock-input">gpt-4o</span>
+                        </div>
+                        <div class="mock-field-row">
+                            <span class="mock-label">{{prompt}}</span>
+                            <span class="mock-input">Explain quantum computing in one sentence</span>
+                        </div>
+                        <div class="mock-field-row">
+                            <span class="mock-label">{{max_tokens}}</span>
+                            <span class="mock-input">150</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mock-divider">
+                    <span class="mock-divider-label">Response</span>
+                </div>
+                <div class="mock-bottom">
+                    <span class="status">200 OK</span> &middot; 342ms<br>
+                    {<br>
+                    &nbsp;&nbsp;<span class="key">"id"</span>: <span class="str">"chatcmpl-9x..."</span>,<br>
+                    &nbsp;&nbsp;<span class="key">"choices"</span>: [{ <span class="key">"message"</span>: {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"content"</span>: <span class="str">"Quantum computing uses qubits..."</span><br>
+                    &nbsp;&nbsp;}}]<br>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Pain Points ── -->
+    <section class="section">
+        <div class="section-label">Why developers switch</div>
+        <h2 class="section-title">Done with the status quo?</h2>
+        <p class="section-desc">The popular API tools come with baggage. DevBook skips all of it.</p>
+
+        <div class="pain-grid">
+            <div class="pain-card">
+                <div class="pain-icon">💸</div>
+                <h3>No $14/seat pricing</h3>
+                <p>Postman charges per seat, per month. Teams of 5 pay $70/mo for what should be a developer utility. DevBook is free — no seats, no tiers, no surprises.</p>
+            </div>
+            <div class="pain-card">
+                <div class="pain-icon">📦</div>
+                <h3>No bloated desktop app</h3>
+                <p>Postman's Electron app ships 300MB+ and launches like it's loading an IDE. DevBook is a web app. Open a tab, start working. Close it when you're done.</p>
+            </div>
+            <div class="pain-card">
+                <div class="pain-icon">🔒</div>
+                <h3>No cloud lock-in</h3>
+                <p>Postman syncs your collections, keys, and environments to their servers. DevBook stores your API keys in your own account. Your requests stay yours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Feature Highlights ── -->
+    <section class="section" style="padding-top: 0;">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Built for how you actually work</h2>
+        <p class="section-desc">Every API tool wants to be a platform. DevBook wants to be a tool.</p>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">{}</div>
+                <h3>Template builder with fillable fields</h3>
+                <p>Mark dynamic parts with <span class="mono" style="color:var(--orange)">{{placeholders}}</span> and DevBook turns them into input fields automatically. Fill in the blanks, hit send. No raw JSON editing, no copy-paste errors.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">#</div>
+                <h3>API key vault</h3>
+                <p>Store all your API keys in one secure place. DevBook matches key names to template variables automatically — your Stripe key fills every <span class="mono" style="color:var(--orange)">{{stripe_key}}</span> without extra work.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">/</div>
+                <h3>Split-screen response viewer</h3>
+                <p>Request on top. Response on the bottom — syntax-highlighted, status color-coded (200 green, 4xx orange, 5xx red), with timing in ms. Everything you need, nothing you don't.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">Q</div>
+                <h3>Searchable request index</h3>
+                <p>Every template you save is indexed and searchable by name, method, and URL. Recall any previous request in seconds. No collections, no folders, no hierarchy to manage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Comparison Table ── -->
+    <section class="section" style="padding-top: 0;">
+        <div class="section-label">Comparison</div>
+        <h2 class="section-title">DevBook vs the alternatives</h2>
+        <p class="section-desc">How does DevBook stack up against the other API tools developers reach for?</p>
+
+        <div class="comparison-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="highlight-col">DevBook</th>
+                        <th>Postman</th>
+                        <th>Bruno</th>
+                        <th>Hoppscotch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Price</td>
+                        <td class="highlight-col" style="color:var(--accent);font-weight:700;">Free</td>
+                        <td>$14/seat/mo</td>
+                        <td>Free (desktop)</td>
+                        <td>Free / $9/mo</td>
+                    </tr>
+                    <tr>
+                        <td>No install required</td>
+                        <td class="highlight-col"><span class="check">✓</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Template builder with fillable fields</td>
+                        <td class="highlight-col"><span class="check">✓</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="cross">✗</span></td>
+                    </tr>
+                    <tr>
+                        <td>API key vault with auto-fill</td>
+                        <td class="highlight-col"><span class="check">✓</span></td>
+                        <td><span class="partial">~ env vars</span></td>
+                        <td><span class="partial">~ env vars</span></td>
+                        <td><span class="partial">~ env vars</span></td>
+                    </tr>
+                    <tr>
+                        <td>Split-screen response viewer</td>
+                        <td class="highlight-col"><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Syntax-highlighted JSON responses</td>
+                        <td class="highlight-col"><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Zero learning curve</td>
+                        <td class="highlight-col"><span class="check">✓</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="partial">~</span></td>
+                        <td><span class="partial">~</span></td>
+                    </tr>
+                    <tr>
+                        <td>No cloud lock-in</td>
+                        <td class="highlight-col"><span class="check">✓</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="cross">✗</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── How it works ── -->
+    <section class="section" style="padding-top: 0;">
+        <div class="section-label">How it works</div>
+        <h2 class="section-title">Three steps. Zero learning curve.</h2>
+        <p class="section-desc">No collections. No environments. No workspaces. Just the parts of API testing you actually use.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <h3>Add your API keys</h3>
+                <p>Paste your keys into the vault — Stripe, OpenAI, Twilio, whatever you use. Reference them with a variable name across every template. One entry, everywhere.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <h3>Build a template</h3>
+                <p>Define your HTTP request and mark dynamic parts with <span class="mono" style="color:var(--orange)">{{placeholders}}</span>. DevBook generates a fillable form. No raw JSON editing, no config files.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <h3>Run and reuse</h3>
+                <p>Fill in the blanks, hit send, see your response instantly. Every template is saved and searchable. Build a library of the API calls your workflow depends on.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Closing CTA ── -->
+    <section class="closing">
+        <h2>Start your 2-week free trial</h2>
+        <p>No download. No credit card. No seat licenses. The API workbench that gets out of your way.</p>
+        <a href="/login" class="btn-primary lg" style="position:relative;">Start your 2-week free trial →</a>
+        <p class="closing-note">No credit card required to get started</p>
+    </section>
+
+    <footer>
+        <p>&copy; DevBook</p>
+    </footer>
+
+    <!-- Analytics: add your own tracking snippet here if needed -->
+
+    <!-- Newo AI Chatbot -->
+    <script defer src="https://static.newo.ai/newo-chat/web-chat.js" name="web-chat" data-client-secret="f8c07531-a735-4c35-ae02-77018e0471fb"></script>
+</body>
+</html>
