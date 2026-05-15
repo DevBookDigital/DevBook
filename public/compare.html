@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postman vs DevBook — Side-by-Side API Workbench Comparison | DevBook</title>
+    <meta name="description" content="Compare Postman vs DevBook side by side. See why developers are switching to DevBook's $19/mo flat pricing — no per-seat fees, no bloated desktop app, no cloud lock-in.">
+    <meta name="keywords" content="Postman alternative, Postman vs DevBook, API testing tool, API workbench, Postman pricing, API client comparison">
+    <link rel="canonical" href="https://devbook.digital/compare">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Postman vs DevBook — The API Workbench Comparison">
+    <meta property="og:description" content="Same price. One-tenth the cost. Compare Postman's $19/user/mo with DevBook's $19/mo flat for your whole team.">
+    <meta property="og:url" content="https://devbook.digital/compare">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DevBook">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Postman vs DevBook — Same price. One-tenth the cost.">
+    <meta name="twitter:description" content="Compare Postman's $19/user/mo with DevBook's $19/mo flat for your whole team.">
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Postman vs DevBook Comparison",
+      "description": "Side-by-side comparison of Postman and DevBook API workbenches. Pricing, features, and developer experience compared.",
+      "url": "https://devbook.digital/compare",
+      "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "DevBook",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "19",
+          "priceCurrency": "USD",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "19",
+            "priceCurrency": "USD",
+            "billingDuration": "P1M"
+          }
+        }
+      }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #22d68a;
+            --accent-dim: #1a9e66;
+            --accent-glow: rgba(34, 214, 138, 0.15);
+            --orange: #ff8c42;
+            --red: #f87171;
+            --red-dim: rgba(248, 113, 113, 0.12);
+            --accent-bg: rgba(34, 214, 138, 0.08);
+            --accent-border: rgba(34, 214, 138, 0.25);
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--bg);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a.nav-link {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.15s;
+        }
+
+        .nav-links a.nav-link:hover { color: var(--text); }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.35rem;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .btn-primary:hover { background: var(--accent-dim); transform: translateY(-1px); }
+
+        .btn-primary.lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.75rem 2rem;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.15s;
+        }
+
+        .btn-secondary:hover { border-color: var(--text-muted); background: var(--surface); }
+
+        /* ── Shared ── */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.9rem;
+            background: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        .highlight { color: var(--accent); }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 5rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .hero > * { position: relative; z-index: 1; }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 6.5vw, 5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            max-width: 880px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero .hero-sub {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+
+        /* Price cards */
+        .price-callout {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .price-card {
+            padding: 2rem 2.5rem;
+            border-radius: 14px;
+            text-align: center;
+            min-width: 250px;
+        }
+
+        .price-card.postman {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .price-card.devbook {
+            background: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+        }
+
+        .price-card-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.75rem;
+        }
+
+        .price-card.postman .price-card-label { color: var(--text-muted); }
+        .price-card.devbook .price-card-label { color: var(--accent); }
+
+        .price-card .price {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .price-card.postman .price {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            text-decoration-color: var(--red);
+            text-decoration-thickness: 3px;
+        }
+
+        .price-card.devbook .price { color: var(--accent); }
+
+        .price-card .price-detail {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .price-card.devbook .price-detail { color: var(--accent); opacity: 0.8; }
+
+        .hero-cta-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-note {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .hero-note a { color: var(--accent); }
+
+        /* ── Calculator ── */
+        .calc-section {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calc-section .section-title,
+        .calc-section .section-subtitle {
+            text-align: center;
+        }
+
+        .calc-section .section-subtitle { margin: 0 auto 3rem; }
+
+        .calculator { max-width: 700px; margin: 0 auto; }
+
+        .slider-row {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .slider-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .slider-value {
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .slider-value span {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            max-width: 460px;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 16px var(--accent-glow);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 16px var(--accent-glow);
+        }
+
+        .cost-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .cost-card {
+            padding: 2rem;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .cost-card.postman {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+        }
+
+        .cost-card.devbook {
+            background: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+        }
+
+        .cost-card-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.5rem;
+        }
+
+        .cost-card.postman .cost-card-name { color: var(--text-muted); }
+        .cost-card.devbook .cost-card-name { color: var(--accent); }
+
+        .cost-card .cost-monthly {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.2;
+        }
+
+        .cost-card.postman .cost-monthly { color: var(--text-muted); }
+        .cost-card.devbook .cost-monthly { color: var(--accent); }
+
+        .cost-card .cost-yearly {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .savings-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 100px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* ── Comparison Table ── */
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 3rem;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .cmp-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+        }
+
+        .cmp-table thead th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cmp-table thead th:first-child { width: 44%; }
+
+        .cmp-table thead th.db-col {
+            color: var(--accent);
+            background: rgba(34, 214, 138, 0.04);
+        }
+
+        .cmp-table tbody td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+
+        .cmp-table tbody tr:last-child td { border-bottom: none; }
+        .cmp-table tbody tr:hover { background: var(--surface); }
+
+        .cmp-table tbody td:first-child {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .cmp-table tbody td:not(:first-child) {
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .cmp-table .db-col { background: rgba(34, 214, 138, 0.03); }
+
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+        }
+
+        .icon.yes { background: var(--accent-bg); color: var(--accent); }
+        .icon.no { background: var(--red-dim); color: var(--red); }
+        .icon.partial { background: rgba(255, 140, 66, 0.12); color: var(--orange); }
+
+        /* ── Pain Points ── */
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .pain-card {
+            padding: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            transition: transform 0.15s, border-color 0.15s;
+        }
+
+        .pain-card:hover {
+            border-color: var(--border);
+            transform: translateY(-2px);
+        }
+
+        .pain-card .emoji { font-size: 2rem; margin-bottom: 1rem; }
+
+        .pain-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .p-way {
+            font-size: 0.85rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .p-way.bad {
+            color: var(--text-muted);
+            background: var(--red-dim);
+            border-left: 3px solid var(--red);
+        }
+
+        .p-way.good {
+            color: var(--accent);
+            background: var(--accent-bg);
+            border-left: 3px solid var(--accent);
+        }
+
+        /* ── Steps ── */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            padding: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── FAQ ── */
+        .faq-section {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .faq-item {
+            padding: 1.5rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .faq-item h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Final CTA ── */
+        .final-cta {
+            text-align: center;
+            padding: 7rem 2rem;
+        }
+
+        .final-cta .section-title {
+            max-width: 620px;
+            margin: 0 auto 1rem;
+        }
+
+        .final-cta .section-subtitle {
+            text-align: center;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* ── Footer ── */
+        footer {
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p { font-size: 0.8rem; color: var(--text-muted); }
+        footer a { color: var(--accent); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.25rem; }
+            section { padding: 4rem 1.25rem; }
+            .hero { padding: 7rem 1.25rem 4rem; }
+            .price-callout { flex-direction: column; align-items: center; }
+            .price-card { min-width: 100%; }
+            .cost-grid { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .pain-grid { grid-template-columns: 1fr; }
+            .faq-grid { grid-template-columns: 1fr; }
+            .slider-value { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Nav ── -->
+    <nav>
+        <a href="/" class="logo">
+            <div class="logo-mark">D</div>
+            DevBook
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/login" class="btn-primary">Start your 2-week free trial →</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <div class="section-label">Postman vs DevBook</div>
+        <h1>Same price. <span class="highlight">One-tenth the cost.</span></h1>
+        <p class="hero-sub">
+            Postman charges $19 per user, per month. DevBook is $19/mo flat — for your whole team. No seat licenses. No surprises.
+        </p>
+
+        <div class="price-callout">
+            <div class="price-card postman">
+                <div class="price-card-label">Postman Team</div>
+                <div class="price">$19</div>
+                <div class="price-detail">per user / month</div>
+            </div>
+            <div class="price-card devbook">
+                <div class="price-card-label">DevBook</div>
+                <div class="price">$19</div>
+                <div class="price-detail">per month — flat, for everyone</div>
+            </div>
+        </div>
+
+        <div class="hero-cta-row">
+            <a href="/login" class="btn-primary lg">Try DevBook free →</a>
+            <a href="#comparison" class="btn-secondary">See full comparison ↓</a>
+        </div>
+        <p class="hero-note">No credit card required · 2-week free trial · <a href="/">devbook.digital</a></p>
+    </section>
+
+    <!-- ── Cost Calculator ── -->
+    <section class="calc-section">
+        <div class="container">
+            <div class="section-label" style="display:flex; justify-content:center;">💰 Cost Calculator</div>
+            <h2 class="section-title">See how fast the savings add up</h2>
+            <p class="section-subtitle">Drag the slider to match your team size.</p>
+
+            <div class="calculator">
+                <div class="slider-row">
+                    <div class="slider-label">Team size</div>
+                    <div class="slider-value"><span id="team-size">5</span> <span>developers</span></div>
+                    <input type="range" id="team-slider" min="1" max="50" value="5">
+                </div>
+
+                <div class="cost-grid">
+                    <div class="cost-card postman">
+                        <div class="cost-card-name">Postman Team</div>
+                        <div class="cost-monthly" id="postman-monthly">$95/mo</div>
+                        <div class="cost-yearly" id="postman-yearly">$1,140/yr</div>
+                    </div>
+                    <div class="cost-card devbook">
+                        <div class="cost-card-name">DevBook</div>
+                        <div class="cost-monthly">$19/mo</div>
+                        <div class="cost-yearly">$228/yr</div>
+                    </div>
+                </div>
+
+                <div style="text-align:center;">
+                    <div class="savings-badge" id="savings-badge">
+                        You save $912/yr with DevBook
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Feature Comparison ── -->
+    <section id="comparison">
+        <div class="container">
+            <div class="section-label">Feature Comparison</div>
+            <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+            <p class="section-subtitle">A side-by-side look at what matters when you're testing APIs every day.</p>
+
+            <div class="table-wrap">
+                <table class="cmp-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="db-col">DevBook</th>
+                            <th>Postman</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Price</td>
+                            <td class="db-col"><strong style="color:var(--accent);">$19/mo flat</strong></td>
+                            <td>$19/user/mo</td>
+                        </tr>
+                        <tr>
+                            <td>Seat licenses</td>
+                            <td class="db-col"><span class="icon yes">✓</span> Unlimited</td>
+                            <td><span class="icon no">✗</span> Per seat</td>
+                        </tr>
+                        <tr>
+                            <td>Runs in browser — no install</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon no">✗</span> Desktop app</td>
+                        </tr>
+                        <tr>
+                            <td>Template builder with fillable fields</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon no">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>API key vault with auto-fill</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon partial">~</span> Env vars</td>
+                        </tr>
+                        <tr>
+                            <td>Split-screen response viewer</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon yes">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Syntax-highlighted responses</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon yes">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Searchable request index</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon partial">~</span> Collections</td>
+                        </tr>
+                        <tr>
+                            <td>Zero learning curve</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon no">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>No cloud lock-in</td>
+                            <td class="db-col"><span class="icon yes">✓</span></td>
+                            <td><span class="icon no">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Collection runner limits</td>
+                            <td class="db-col"><span class="icon yes">✓</span> Unlimited</td>
+                            <td><span class="icon no">✗</span> 25/mo (free)</td>
+                        </tr>
+                        <tr>
+                            <td>Free plan: team collaboration</td>
+                            <td class="db-col">Free trial, then $19 flat</td>
+                            <td><span class="icon no">✗</span> 1 user only</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Pain Points ── -->
+    <section style="background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+        <div class="container">
+            <div class="section-label">Why Developers Switch</div>
+            <h2 class="section-title">Postman problems DevBook doesn't have</h2>
+            <p class="section-subtitle">Real pain points from real developers — and how DevBook handles them differently.</p>
+
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="emoji">💸</div>
+                    <h3>Per-seat pricing adds up fast</h3>
+                    <div class="p-way bad">Postman: $19/user/mo. A 10-person team costs $2,280/yr.</div>
+                    <div class="p-way good">DevBook: $19/mo flat. Same team, same year — $228.</div>
+                </div>
+
+                <div class="pain-card">
+                    <div class="emoji">📦</div>
+                    <h3>300MB desktop app to test an API?</h3>
+                    <div class="p-way bad">Postman: Electron app ships 300MB+. Launches slow, eats RAM.</div>
+                    <div class="p-way good">DevBook: Open a browser tab. Start working. Close when done.</div>
+                </div>
+
+                <div class="pain-card">
+                    <div class="emoji">🔒</div>
+                    <h3>Your keys on someone else's cloud</h3>
+                    <div class="p-way bad">Postman: Syncs collections, keys, and environments to their servers.</div>
+                    <div class="p-way good">DevBook: Your API keys live in your account. Your data stays yours.</div>
+                </div>
+
+                <div class="pain-card">
+                    <div class="emoji">🧩</div>
+                    <h3>Collections, workspaces, environments…</h3>
+                    <div class="p-way bad">Postman: Steep learning curve. Collections, folders, environments, globals — layers of abstraction before your first request.</div>
+                    <div class="p-way good">DevBook: Add keys, build a template, hit send. Three steps.</div>
+                </div>
+
+                <div class="pain-card">
+                    <div class="emoji">🚫</div>
+                    <h3>Free plan: 1 user, 25 runs/mo</h3>
+                    <div class="p-way bad">Postman: Free tier locked to 1 user since March 2026. 25 collection runs/mo. Collaboration requires paid plan.</div>
+                    <div class="p-way good">DevBook: 2-week free trial with full access. Then $19/mo for everyone.</div>
+                </div>
+
+                <div class="pain-card">
+                    <div class="emoji">⚡</div>
+                    <h3>Feature bloat slows everything down</h3>
+                    <div class="p-way bad">Postman: API platform with flows, monitors, mock servers, governance, AI bots — most devs use 10% of it.</div>
+                    <div class="p-way good">DevBook: Built to be a tool, not a platform. Fast, focused, done.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How It Works ── -->
+    <section>
+        <div class="container">
+            <div class="section-label">How It Works</div>
+            <h2 class="section-title">Three steps. Zero learning curve.</h2>
+            <p class="section-subtitle">No collections. No environments. No workspaces. Just the parts of API testing you actually use.</p>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">01</div>
+                    <h3>Add your API keys</h3>
+                    <p>Paste your keys into the vault — Stripe, OpenAI, Twilio, whatever you use. Reference them by name across every template. One entry, everywhere.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">02</div>
+                    <h3>Build a template</h3>
+                    <p>Define your HTTP request and mark dynamic parts with <code class="mono" style="background:var(--accent-bg);padding:2px 6px;border-radius:4px;color:var(--accent);font-size:0.8rem;">{{placeholders}}</code>. DevBook generates a fillable form — no raw JSON editing.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">03</div>
+                    <h3>Run and reuse</h3>
+                    <p>Fill in the blanks, hit send, see your response instantly. Every template is saved and searchable. Build a library of API calls your workflow depends on.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-label">FAQ</div>
+            <h2 class="section-title">Common questions</h2>
+
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Is DevBook really $19/mo for an entire team?</h3>
+                    <p>Yes. $19/month, flat. No per-seat pricing, no tiers, no usage caps. Whether you have 2 developers or 20, the price is the same.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I import my Postman collections?</h3>
+                    <p>DevBook uses templates with fillable fields instead of collections. You can recreate your most-used requests in minutes — most teams find the simpler model faster to work with long-term.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Does DevBook support GraphQL / WebSocket?</h3>
+                    <p>DevBook focuses on REST API workflows — the requests most developers make every day. If you primarily work with GraphQL or WebSocket, Postman may still be a better fit for those specific use cases.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is there a free plan?</h3>
+                    <p>DevBook offers a 2-week free trial with full access — no credit card required. After that, it's $19/mo flat. No feature gating, no artificial limits.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How does DevBook handle API key security?</h3>
+                    <p>Your API keys are stored in your own account vault and auto-matched to template variables. Unlike Postman, DevBook doesn't sync your keys to a third-party cloud by default.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need to install anything?</h3>
+                    <p>No. DevBook is a web app. Open your browser, sign in, and start working. No 300MB Electron app, no updates to manage, no local storage to worry about.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Final CTA ── -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="section-label" style="display:flex; justify-content:center;">Ready to switch?</div>
+            <h2 class="section-title">Stop paying per seat for a developer utility.</h2>
+            <p class="section-subtitle">DevBook gives your whole team an API workbench for less than what Postman charges one developer.</p>
+            <a href="/login" class="btn-primary lg">Start your free trial →</a>
+            <p class="hero-note" style="margin-top:1rem;">No credit card required · No download · No seat licenses</p>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+        <div class="container">
+            <p><a href="/">DevBook</a> — The API Workbench for Developers &nbsp;·&nbsp; © 2026 DevBook Digital</p>
+        </div>
+    </footer>
+
+    <script>
+        const slider = document.getElementById('team-slider');
+        const teamSize = document.getElementById('team-size');
+        const postmanMonthly = document.getElementById('postman-monthly');
+        const postmanYearly = document.getElementById('postman-yearly');
+        const savingsBadge = document.getElementById('savings-badge');
+
+        function updateCalc() {
+            const n = parseInt(slider.value);
+            teamSize.textContent = n;
+            const pm = n * 19;
+            const py = pm * 12;
+            const saved = py - 228;
+            postmanMonthly.textContent = '$' + pm.toLocaleString() + '/mo';
+            postmanYearly.textContent = '$' + py.toLocaleString() + '/yr';
+            if (saved > 0) {
+                savingsBadge.textContent = 'You save $' + saved.toLocaleString() + '/yr with DevBook';
+                savingsBadge.style.display = 'inline-flex';
+            } else {
+                savingsBadge.style.display = 'none';
+            }
+        }
+
+        slider.addEventListener('input', updateCalc);
+        updateCalc();
+
+        document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                var t = document.querySelector(this.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+
+</body>
+</html>
