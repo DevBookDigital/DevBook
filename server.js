@@ -89,6 +89,16 @@ app.get('/login', (req, res) => {
   }
 });
 
+// Comparison page (Postman vs DevBook)
+app.get('/compare', (req, res) => {
+  const htmlPath = path.join(__dirname, 'public', 'compare.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('Page not found');
+  }
+});
+
 // App page
 app.get('/app', (req, res) => {
   const htmlPath = path.join(__dirname, 'public', 'app.html');
