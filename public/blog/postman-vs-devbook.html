@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postman vs DevBook — An Honest Comparison | DevBook Blog</title>
+    <meta name="description" content="A side-by-side comparison of Postman and DevBook. Pricing, features, UX, and which API testing tool fits your workflow.">
+    <link rel="canonical" href="https://devbook.digital/blog/postman-vs-devbook">
+    <meta property="og:title" content="Postman vs DevBook — An Honest Comparison">
+    <meta property="og:description" content="A side-by-side look at two API tools. Where Postman wins, where DevBook wins, and who each is for.">
+    <meta property="og:url" content="https://devbook.digital/blog/postman-vs-devbook">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26; --border: #2a2a3a; --text: #e8e8f0; --text-muted: #8888a0; --accent: #22d68a; --accent-dim: #1a9e66; --accent-glow: rgba(34, 214, 138, 0.15); --orange: #ff8c42; }
+        body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        .logo { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.5rem; color: var(--text); }
+        .logo-mark { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.85rem; color: var(--bg); }
+        .btn-primary { display: inline-flex; align-items: center; padding: 0.55rem 1.35rem; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 0.9rem; }
+
+        article { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .breadcrumb { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .breadcrumb a { color: var(--text-muted); }
+        article h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 1rem; }
+        .meta { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 3rem; }
+        article h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin: 3rem 0 1rem; }
+        article h3 { font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.75rem; }
+        article p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        article strong { color: var(--text); }
+        article ul, article ol { margin: 0 0 1.5rem 1.5rem; color: var(--text-muted); }
+        article li { margin-bottom: 0.5rem; font-size: 1.05rem; }
+        article code { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; background: var(--surface-2); padding: 0.15rem 0.4rem; border-radius: 4px; color: var(--orange); }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0 2rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+        .comparison-table th, .comparison-table td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        .comparison-table th { background: var(--surface-2); font-weight: 700; color: var(--text); }
+        .comparison-table td { color: var(--text-muted); }
+        .comparison-table td:first-child { color: var(--text); font-weight: 600; }
+        .comparison-table tr:last-child td { border-bottom: none; }
+
+        .cta-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; text-align: center; margin: 3rem 0; }
+        .cta-box h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text); }
+        .cta-box p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .cta-box .btn-primary { font-size: 1rem; padding: 0.7rem 2rem; }
+
+        footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; max-width: 720px; margin: 0 auto; }
+
+        @media (max-width: 768px) { article { padding: 6rem 1.25rem 3rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" style="text-decoration:none"><div class="logo"><div class="logo-mark">D</div>DevBook</div></a>
+        <a href="/login" class="btn-primary">Try free →</a>
+    </nav>
+
+    <article>
+        <div class="breadcrumb"><a href="/blog">← Blog</a></div>
+
+        <h1>Postman vs DevBook — An Honest Comparison</h1>
+        <div class="meta">May 2026 · 6 min read</div>
+
+        <p>If you're Googling "Postman alternative," you probably already know what's bugging you — the per-seat pricing, the forced cloud sync, the desktop app that takes 10 seconds to load. But does DevBook actually solve those problems, or is it just a smaller version of the same thing?</p>
+
+        <p>This is an honest comparison. We'll tell you where Postman is better, too.</p>
+
+        <h2>The quick comparison</h2>
+
+        <table class="comparison-table">
+            <thead>
+                <tr><th></th><th>DevBook</th><th>Postman</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Type</td><td>Browser-based web app</td><td>Desktop app (Electron)</td></tr>
+                <tr><td>Install size</td><td>0 MB (open a tab)</td><td>~300 MB download</td></tr>
+                <tr><td>Pricing</td><td>Free / $19/mo flat</td><td>Free / $14/seat/month</td></tr>
+                <tr><td>Team of 5 cost</td><td>$19/month</td><td>$70/month</td></tr>
+                <tr><td>Template builder</td><td>✓ with {{fillable fields}}</td><td>✗</td></tr>
+                <tr><td>API key vault</td><td>✓ auto-fill by name</td><td>~ via environment variables</td></tr>
+                <tr><td>Key encryption</td><td>AES-256-GCM at rest</td><td>Cloud-stored</td></tr>
+                <tr><td>Scripting / tests</td><td>✗ (not yet)</td><td>✓ full JS scripting</td></tr>
+                <tr><td>Mock servers</td><td>✗</td><td>✓</td></tr>
+                <tr><td>API documentation</td><td>✗</td><td>✓</td></tr>
+                <tr><td>GraphQL support</td><td>✗</td><td>✓</td></tr>
+                <tr><td>Learning curve</td><td>~30 seconds</td><td>30+ minutes</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Where DevBook wins</h2>
+
+        <h3>1. Price</h3>
+        <p>This is the big one. DevBook Pro costs $19/month for your entire team — unlimited users. Postman charges $14 per seat per month. A 5-person team pays $70/month on Postman vs $19 on DevBook. A 20-person team pays $280 vs $19. The gap only gets wider.</p>
+
+        <h3>2. No download required</h3>
+        <p>DevBook runs in your browser. Open a tab, start testing. Postman requires downloading a ~300MB Electron app, signing in, and waiting for it to sync your workspace. For a tool you might use for 5 minutes a day, that's a lot of overhead.</p>
+
+        <h3>3. Template builder</h3>
+        <p>This is DevBook's unique feature. Mark parts of your request with <code>{{placeholders}}</code> and DevBook generates a fillable form. Instead of editing raw JSON every time, you fill in the blanks and hit send. Postman doesn't have this — you edit the request directly every time.</p>
+
+        <h3>4. API key vault with auto-fill</h3>
+        <p>Store your API keys once. DevBook matches key names to template variables automatically. Your key named <code>stripe_key</code> fills every <code>{{stripe_key}}</code> in every template. Postman uses environment variables, which work but require more setup and switching.</p>
+
+        <h3>5. Simplicity</h3>
+        <p>DevBook is intentionally minimal. No collections, no workspaces, no runners, no monitors. If you just want to send a request and see the response, you can be productive in 30 seconds. Postman's learning curve is measured in hours.</p>
+
+        <h2>Where Postman wins</h2>
+
+        <h3>1. Scripting and test automation</h3>
+        <p>Postman has full JavaScript scripting — pre-request scripts, test scripts, collection runners. If you need to chain requests, assert on responses, or run automated test suites, Postman is significantly more capable. DevBook doesn't have scripting yet.</p>
+
+        <h3>2. Mock servers</h3>
+        <p>Postman can create mock servers that return predefined responses. Useful for frontend development when the backend isn't ready. DevBook doesn't offer this.</p>
+
+        <h3>3. API documentation</h3>
+        <p>Postman can auto-generate API documentation from your collections. DevBook is purely a testing tool — it doesn't generate docs.</p>
+
+        <h3>4. GraphQL tooling</h3>
+        <p>Postman has dedicated GraphQL support with schema introspection and query builders. DevBook supports raw HTTP requests only (you can send GraphQL queries as POST requests, but there's no dedicated UI).</p>
+
+        <h3>5. Ecosystem and integrations</h3>
+        <p>Postman has CI/CD integrations (Newman), API governance tools, and an enormous user community. DevBook is new and focused on core testing.</p>
+
+        <h2>The bottom line</h2>
+
+        <p><strong>Use Postman if</strong> you need scripting, test automation, mock servers, API docs, or GraphQL tooling. Postman is a full API platform and it does platform-level things well.</p>
+
+        <p><strong>Use DevBook if</strong> you spend most of your API time sending requests and reading responses. If "test this endpoint" is 80% of your API workflow, DevBook is faster, simpler, and dramatically cheaper for teams.</p>
+
+        <p>Most developers fall into the second category. The majority of API work is "send request, see response, iterate." DevBook is purpose-built for that workflow.</p>
+
+        <div class="cta-box">
+            <h3>Try DevBook free</h3>
+            <p>No download, no credit card. Open a tab and test your first API in 30 seconds.</p>
+            <a href="/login" class="btn-primary">Start free →</a>
+        </div>
+    </article>
+
+    <footer>
+        <p>&copy; 2026 DevBook Digital · <a href="/">Home</a> · <a href="/blog">Blog</a> · <a href="/pricing">Pricing</a></p>
+    </footer>
+</body>
+</html>

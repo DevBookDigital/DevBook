@@ -28,19 +28,18 @@
       "name": "DevBook",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
+      "offers": [
+        { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Free" },
+        { "@type": "Offer", "price": "19", "priceCurrency": "USD", "name": "Pro", "billingIncrement": "month" }
+      ],
       "description": "Modern API workbench for developers. API key vault, template builder with fillable fields, and split-screen response viewer — all in your browser.",
       "url": "https://devbook.digital",
       "featureList": [
-        "API key vault",
+        "API key vault with AES-256-GCM encryption",
         "Template builder with fillable fields",
         "Split-screen response viewer",
         "No installation required",
-        "Free forever"
+        "Free for individual developers"
       ]
     }
     </script>
@@ -114,6 +113,19 @@
             color: var(--bg);
         }
 
+        .nav-center {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-center a {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.15s;
+        }
+
+        .nav-center a:hover { color: var(--text); }
+
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -134,6 +146,28 @@
             font-size: 1.1rem;
             border-radius: 10px;
             box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.35rem;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+
+        .btn-secondary:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+        .btn-secondary.lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
         }
 
         /* ── Hero ── */
@@ -223,6 +257,47 @@
         }
 
         .hero-cta-note strong { color: var(--accent); }
+
+        /* ── Social Proof Bar ── */
+        .social-proof {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .social-proof-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .proof-stat {
+            text-align: center;
+        }
+
+        .proof-stat .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .proof-stat .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .proof-divider {
+            width: 1px;
+            height: 40px;
+            background: var(--border);
+        }
 
         /* ── Mock UI ── */
         .mock-window {
@@ -479,6 +554,38 @@
             line-height: 1.6;
         }
 
+        /* ── Who it's for ── */
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .persona-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .persona-card:hover { border-color: var(--accent-dim); }
+
+        .persona-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .persona-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
         /* ── Comparison table ── */
         .comparison-wrap {
             overflow-x: auto;
@@ -587,6 +694,146 @@
             line-height: 1.6;
         }
 
+        /* ── Security ── */
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .security-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .security-card:hover { border-color: var(--accent-dim); }
+
+        .security-card .sec-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .security-card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .security-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .security-card code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: var(--accent-glow);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        /* ── Pricing Preview ── */
+        .pricing-preview {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-preview .section-label,
+        .pricing-preview .section-title {
+            text-align: center;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 700px;
+            margin: 2.5rem auto 0;
+        }
+
+        .pricing-card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            background: var(--bg);
+            text-align: left;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+            position: relative;
+        }
+
+        .pricing-tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--bg);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-card .price span {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .pricing-card .price-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 1.75rem;
+        }
+
+        .pricing-card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .pricing-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .pricing-card .btn-primary,
+        .pricing-card .btn-secondary { width: 100%; justify-content: center; }
+
         /* ── Closing CTA ── */
         .closing {
             text-align: center;
@@ -633,27 +880,74 @@
 
         /* ── Footer ── */
         footer {
-            text-align: center;
-            padding: 3rem 2rem;
             border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            padding: 4rem 2rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        footer a { color: var(--accent); }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand .logo { margin-bottom: 1rem; }
+        .footer-brand p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; max-width: 280px; }
+
+        .footer-col h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            transition: color 0.15s;
+        }
+
+        .footer-col a:hover { color: var(--accent); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-bottom a { color: var(--text-muted); margin-left: 1.5rem; }
+        .footer-bottom a:hover { color: var(--accent); }
 
         /* ── Mobile ── */
         @media (max-width: 768px) {
             nav { padding: 1rem 1.25rem; }
+            .nav-center { display: none; }
             .hero { padding: 7rem 1.25rem 4rem; }
             .section { padding: 4rem 1.25rem; }
             h1 { letter-spacing: -1px; }
             .pain-grid { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr; }
             .features { grid-template-columns: 1fr; }
+            .persona-grid { grid-template-columns: 1fr; }
+            .security-grid { grid-template-columns: 1fr; }
+            .pricing-cards { grid-template-columns: 1fr; max-width: 400px; }
             .mock-method-bar { flex-wrap: wrap; }
             .mock-url-field { min-width: 0; }
             .hero-cta-group { flex-direction: column; gap: 0.75rem; }
+            .social-proof-inner { gap: 2rem; }
+            .proof-divider { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
         }
     </style>
 </head>
@@ -661,25 +955,34 @@
 
     <!-- ── Nav ── -->
     <nav>
-        <div class="logo">
-            <div class="logo-mark">D</div>
-            DevBook
+        <a href="/" style="text-decoration:none">
+            <div class="logo">
+                <div class="logo-mark">D</div>
+                DevBook
+            </div>
+        </a>
+        <div class="nav-center">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#security">Security</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/blog">Blog</a>
         </div>
-        <a href="/login" class="btn-primary">Start your 2-week free trial →</a>
+        <a href="/login" class="btn-primary">Try free →</a>
     </nav>
 
     <!-- ── Hero ── -->
     <section class="hero">
         <div class="hero-badge">
             <span class="dot"></span>
-            2-week free trial — no credit card required
+            Free for individuals — no credit card required
         </div>
         <h1>The API workbench that <span class="highlight">doesn't waste your time</span></h1>
         <p class="hero-sub">Store your keys once. Build request templates with fillable fields. Get answers in a clean split-screen interface. No $14/seat pricing. No download.</p>
 
         <div class="hero-cta-group">
-            <a href="/login" class="btn-primary lg">Start your 2-week free trial →</a>
-            <span class="hero-cta-note"><strong>No credit card required</strong> &mdash; start in 30 seconds</span>
+            <a href="/login" class="btn-primary lg">Start free →</a>
+            <a href="#how-it-works" class="btn-secondary lg">See how it works ↓</a>
         </div>
 
         <div class="mock-window">
@@ -727,6 +1030,31 @@
         </div>
     </section>
 
+    <!-- ── Social Proof ── -->
+    <section class="social-proof">
+        <div class="social-proof-inner">
+            <div class="proof-stat">
+                <div class="number">2 sec</div>
+                <div class="label">Average load time</div>
+            </div>
+            <div class="proof-divider"></div>
+            <div class="proof-stat">
+                <div class="number">0 MB</div>
+                <div class="label">Nothing to download</div>
+            </div>
+            <div class="proof-divider"></div>
+            <div class="proof-stat">
+                <div class="number">$19</div>
+                <div class="label">Flat — unlimited team</div>
+            </div>
+            <div class="proof-divider"></div>
+            <div class="proof-stat">
+                <div class="number">30s</div>
+                <div class="label">To your first request</div>
+            </div>
+        </div>
+    </section>
+
     <!-- ── Pain Points ── -->
     <section class="section">
         <div class="section-label">Why developers switch</div>
@@ -737,7 +1065,7 @@
             <div class="pain-card">
                 <div class="pain-icon">💸</div>
                 <h3>No $14/seat pricing</h3>
-                <p>Postman charges per seat, per month. Teams of 5 pay $70/mo for what should be a developer utility. DevBook is free — no seats, no tiers, no surprises.</p>
+                <p>Postman charges per seat, per month. Teams of 5 pay $70/mo for what should be a developer utility. DevBook Pro is $19/mo flat — unlimited team members.</p>
             </div>
             <div class="pain-card">
                 <div class="pain-icon">📦</div>
@@ -747,13 +1075,13 @@
             <div class="pain-card">
                 <div class="pain-icon">🔒</div>
                 <h3>No cloud lock-in</h3>
-                <p>Postman syncs your collections, keys, and environments to their servers. DevBook stores your API keys in your own account. Your requests stay yours.</p>
+                <p>Postman syncs your collections, keys, and environments to their servers. DevBook encrypts your API keys with AES-256-GCM at rest. Your data stays yours.</p>
             </div>
         </div>
     </section>
 
     <!-- ── Feature Highlights ── -->
-    <section class="section" style="padding-top: 0;">
+    <section class="section" id="features" style="padding-top: 0;">
         <div class="section-label">Features</div>
         <h2 class="section-title">Built for how you actually work</h2>
         <p class="section-desc">Every API tool wants to be a platform. DevBook wants to be a tool.</p>
@@ -782,6 +1110,32 @@
         </div>
     </section>
 
+    <!-- ── Who It's For ── -->
+    <section class="section" style="padding-top: 0;">
+        <div class="section-label">Who it's for</div>
+        <h2 class="section-title">If you test APIs, this is for you</h2>
+        <p class="section-desc">DevBook fits any workflow where you send HTTP requests and need to see what comes back.</p>
+
+        <div class="persona-grid">
+            <div class="persona-card">
+                <h3>⚡ Backend developers</h3>
+                <p>Test your endpoints during development without writing throwaway scripts. Save templates for every route and re-test as you iterate.</p>
+            </div>
+            <div class="persona-card">
+                <h3>🔌 API integrators</h3>
+                <p>Working with Stripe, OpenAI, Twilio, or any third-party API? Build templates with your keys auto-filled. Test in seconds instead of minutes.</p>
+            </div>
+            <div class="persona-card">
+                <h3>🚀 Frontend developers</h3>
+                <p>Verify the API response shape before you write the fetch call. See exactly what your code will get — status, headers, body — with real data.</p>
+            </div>
+            <div class="persona-card">
+                <h3>👥 Dev teams</h3>
+                <p>Share templates across the team so everyone uses the same requests. One key vault, one set of templates. $19/mo flat — no per-seat math.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- ── Comparison Table ── -->
     <section class="section" style="padding-top: 0;">
         <div class="section-label">Comparison</div>
@@ -801,8 +1155,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Price</td>
-                        <td class="highlight-col" style="color:var(--accent);font-weight:700;">Free</td>
+                        <td>Price (team)</td>
+                        <td class="highlight-col" style="color:var(--accent);font-weight:700;">$19/mo flat</td>
                         <td>$14/seat/mo</td>
                         <td>Free (desktop)</td>
                         <td>Free / $9/mo</td>
@@ -829,14 +1183,14 @@
                         <td><span class="partial">~ env vars</span></td>
                     </tr>
                     <tr>
-                        <td>Split-screen response viewer</td>
-                        <td class="highlight-col"><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
+                        <td>Encrypted key storage</td>
+                        <td class="highlight-col"><span class="check">✓ AES-256</span></td>
+                        <td><span class="partial">~ cloud</span></td>
+                        <td><span class="check">✓ local</span></td>
+                        <td><span class="partial">~ cloud</span></td>
                     </tr>
                     <tr>
-                        <td>Syntax-highlighted JSON responses</td>
+                        <td>Split-screen response viewer</td>
                         <td class="highlight-col"><span class="check">✓</span></td>
                         <td><span class="check">✓</span></td>
                         <td><span class="check">✓</span></td>
@@ -850,7 +1204,7 @@
                         <td><span class="partial">~</span></td>
                     </tr>
                     <tr>
-                        <td>No cloud lock-in</td>
+                        <td>No forced cloud sync</td>
                         <td class="highlight-col"><span class="check">✓</span></td>
                         <td><span class="cross">✗</span></td>
                         <td><span class="check">✓</span></td>
@@ -862,7 +1216,7 @@
     </section>
 
     <!-- ── How it works ── -->
-    <section class="section" style="padding-top: 0;">
+    <section class="section" id="how-it-works" style="padding-top: 0;">
         <div class="section-label">How it works</div>
         <h2 class="section-title">Three steps. Zero learning curve.</h2>
         <p class="section-desc">No collections. No environments. No workspaces. Just the parts of API testing you actually use.</p>
@@ -886,19 +1240,130 @@
         </div>
     </section>
 
-    <!-- ── Closing CTA ── -->
-    <section class="closing">
-        <h2>Start your 2-week free trial</h2>
-        <p>No download. No credit card. No seat licenses. The API workbench that gets out of your way.</p>
-        <a href="/login" class="btn-primary lg" style="position:relative;">Start your 2-week free trial →</a>
-        <p class="closing-note">No credit card required to get started</p>
+    <!-- ── Security ── -->
+    <section class="section" id="security" style="padding-top: 0;">
+        <div class="section-label">Security</div>
+        <h2 class="section-title">Your keys are safe here</h2>
+        <p class="section-desc">We built DevBook knowing that developers trust us with their most sensitive credentials. Here's how we protect them.</p>
+
+        <div class="security-grid">
+            <div class="security-card">
+                <div class="sec-icon">🔐</div>
+                <h3>AES-256-GCM encryption</h3>
+                <p>Every API key stored in the vault is encrypted at rest using <code>AES-256-GCM</code> — the same standard used by banks and cloud providers. Keys are decrypted only when you use them.</p>
+            </div>
+            <div class="security-card">
+                <div class="sec-icon">🔒</div>
+                <h3>TLS everywhere</h3>
+                <p>All connections between your browser and DevBook use TLS encryption. Your requests, responses, and credentials are never transmitted in plaintext.</p>
+            </div>
+            <div class="security-card">
+                <div class="sec-icon">🚫</div>
+                <h3>No payload logging</h3>
+                <p>We never log your request bodies or API responses on our servers. Your data passes through to execute the request and is not stored or analyzed.</p>
+            </div>
+        </div>
     </section>
 
+    <!-- ── Pricing Preview ── -->
+    <section class="pricing-preview">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title">Simple pricing. No per-seat math.</h2>
+        <p class="section-desc" style="text-align: center; margin-left: auto; margin-right: auto;">Your whole team for less than one Postman seat.</p>
+
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Free</h3>
+                <div class="price">$0 <span>/month</span></div>
+                <div class="price-note">Free forever</div>
+                <ul>
+                    <li>25 saved templates</li>
+                    <li>10 API keys in vault</li>
+                    <li>Split-screen viewer</li>
+                    <li>All HTTP methods</li>
+                    <li>Unlimited requests</li>
+                </ul>
+                <a href="/login" class="btn-secondary">Get started free</a>
+            </div>
+            <div class="pricing-card featured">
+                <span class="pricing-tag">Teams</span>
+                <h3>Pro</h3>
+                <div class="price">$19 <span>/month</span></div>
+                <div class="price-note">Flat — unlimited team members</div>
+                <ul>
+                    <li>Everything in Free</li>
+                    <li>Unlimited templates</li>
+                    <li>Unlimited API keys</li>
+                    <li>Unlimited team members</li>
+                    <li>Shared templates & vault</li>
+                    <li>Priority support</li>
+                </ul>
+                <a href="/login?plan=pro" class="btn-primary">Start 14-day free trial</a>
+            </div>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">No credit card required · <a href="/pricing" style="color: var(--accent);">See full pricing details →</a></p>
+    </section>
+
+    <!-- ── Closing CTA ── -->
+    <section class="closing">
+        <h2>Open a tab. Test an API.</h2>
+        <p>No download. No credit card. No seat licenses. The API workbench that gets out of your way.</p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative;">
+            <a href="/login" class="btn-primary lg">Start free →</a>
+            <a href="#how-it-works" class="btn-secondary lg">See how it works ↓</a>
+        </div>
+        <p class="closing-note">Free for individuals · Teams $19/mo flat</p>
+    </section>
+
+    <!-- ── Footer ── -->
     <footer>
-        <p>&copy; DevBook</p>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <div class="logo-mark">D</div>
+                    DevBook
+                </div>
+                <p>The modern API workbench for developers who just want to send a request and see what comes back.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <a href="#features">Features</a>
+                <a href="/pricing">Pricing</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#security">Security</a>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <a href="/blog">Blog</a>
+                <a href="/blog/postman-vs-devbook">Postman vs DevBook</a>
+                <a href="/blog/best-postman-alternatives-2025">Alternatives</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="mailto:support@devbook.digital">support@devbook.digital</a>
+                <a href="https://github.com/DevBookDigital/DevBook" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 DevBook Digital</span>
+            <div>
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+            </div>
+        </div>
     </footer>
 
-    <!-- Analytics: add your own tracking snippet here if needed -->
+    <!-- Smooth scroll for anchor links -->
+    <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+    </script>
 
     <!-- Newo AI Chatbot -->
     <script defer src="https://static.newo.ai/newo-chat/web-chat.js" name="web-chat" data-client-secret="f8c07531-a735-4c35-ae02-77018e0471fb"></script>

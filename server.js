@@ -55,7 +55,7 @@ app.use(express.text({ limit: '2mb' }));
 
 // No-cache for HTML
 app.use((req, res, next) => {
-  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login') {
+  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login' || req.path === '/pricing' || req.path.startsWith('/blog')) {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   }
   next();
@@ -86,6 +86,37 @@ app.get('/login', (req, res) => {
     res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
   } else {
     res.status(404).send('Login page not found');
+  }
+});
+
+// Pricing page
+app.get('/pricing', (req, res) => {
+  const htmlPath = path.join(__dirname, 'public', 'pricing.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('Pricing page not found');
+  }
+});
+
+// Blog index
+app.get('/blog', (req, res) => {
+  const htmlPath = path.join(__dirname, 'public', 'blog', 'index.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('Blog not found');
+  }
+});
+
+// Blog articles
+app.get('/blog/:slug', (req, res) => {
+  const slug = req.params.slug.replace(/[^a-z0-9-]/gi, '');
+  const htmlPath = path.join(__dirname, 'public', 'blog', slug + '.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('Article not found');
   }
 });
 
