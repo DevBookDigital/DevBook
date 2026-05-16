@@ -9,16 +9,20 @@
     <link rel="canonical" href="https://devbook.digital">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="DevBook — The API Workbench for Developers">
-    <meta property="og:description" content="Modern API workbench with API key vault, template builder, and split-screen response viewer — all in your browser.">
+    <meta property="og:title" content="DevBook — Test APIs in your browser. $19/mo flat for your whole team.">
+    <meta property="og:description" content="Browser-based API workbench with key vault, template builder, and split-screen response viewer. No download. No per-seat pricing. Free for individuals.">
     <meta property="og:url" content="https://devbook.digital">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DevBook">
+    <meta property="og:image" content="https://devbook.digital/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DevBook — The API Workbench for Developers">
-    <meta name="twitter:description" content="Modern API testing that gets out of your way.">
+    <meta name="twitter:title" content="DevBook — Test APIs in your browser. $19/mo flat for your whole team.">
+    <meta name="twitter:description" content="Browser-based API workbench with key vault, template builder, and split-screen viewer. No download. No per-seat pricing.">
+    <meta name="twitter:image" content="https://devbook.digital/og-image.png">
 
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
@@ -967,8 +971,9 @@
             <a href="#security">Security</a>
             <a href="/pricing">Pricing</a>
             <a href="/blog">Blog</a>
+            <a href="mailto:kristie@devbook.digital">Contact</a>
         </div>
-        <a href="/login" class="btn-primary">Try free →</a>
+        <a href="/login" class="btn-primary">Create free account →</a>
     </nav>
 
     <!-- ── Hero ── -->
@@ -977,14 +982,16 @@
             <span class="dot"></span>
             Free for individuals — no credit card required
         </div>
-        <h1>The API workbench that <span class="highlight">doesn't waste your time</span></h1>
-        <p class="hero-sub">Store your keys once. Build request templates with fillable fields. Get answers in a clean split-screen interface. No $14/seat pricing. No download.</p>
+        <h1>Test APIs in your browser. <span class="highlight">$19/mo flat</span> for your whole team.</h1>
+        <p class="hero-sub">Store API keys once, build reusable request templates with fillable fields, and see responses in a clean split-screen viewer. No desktop app. No per-seat pricing.</p>
 
         <div class="hero-cta-group">
-            <a href="/login" class="btn-primary lg">Start free →</a>
-            <a href="#how-it-works" class="btn-secondary lg">See how it works ↓</a>
+            <a href="/login" class="btn-primary lg">Create free account →</a>
+            <a href="#product-demo" class="btn-secondary lg">See DevBook in action ↓</a>
         </div>
+        <p class="hero-cta-note">14-day free trial · No credit card required · <strong>Free forever for individuals</strong></p>
 
+        <p id="product-demo" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; position: relative;">👇 This is what DevBook looks like — a template for an OpenAI API call with fillable fields</p>
         <div class="mock-window">
             <div class="mock-titlebar">
                 <div class="mock-dot"></div>
@@ -1034,23 +1041,23 @@
     <section class="social-proof">
         <div class="social-proof-inner">
             <div class="proof-stat">
-                <div class="number">2 sec</div>
-                <div class="label">Average load time</div>
-            </div>
-            <div class="proof-divider"></div>
-            <div class="proof-stat">
-                <div class="number">0 MB</div>
-                <div class="label">Nothing to download</div>
+                <div class="number">100%</div>
+                <div class="label">Browser-based — no download</div>
             </div>
             <div class="proof-divider"></div>
             <div class="proof-stat">
                 <div class="number">$19</div>
-                <div class="label">Flat — unlimited team</div>
+                <div class="label">Flat — unlimited team members</div>
             </div>
             <div class="proof-divider"></div>
             <div class="proof-stat">
-                <div class="number">30s</div>
-                <div class="label">To your first request</div>
+                <div class="number">AES-256</div>
+                <div class="label">Encryption for your API keys</div>
+            </div>
+            <div class="proof-divider"></div>
+            <div class="proof-stat">
+                <div class="number">$0</div>
+                <div class="label">Free forever for solo devs</div>
             </div>
         </div>
     </section>
@@ -1113,8 +1120,8 @@
     <!-- ── Who It's For ── -->
     <section class="section" style="padding-top: 0;">
         <div class="section-label">Who it's for</div>
-        <h2 class="section-title">If you test APIs, this is for you</h2>
-        <p class="section-desc">DevBook fits any workflow where you send HTTP requests and need to see what comes back.</p>
+        <h2 class="section-title">Solo devs, teams, and anyone who tests APIs</h2>
+        <p class="section-desc">Whether you're a backend developer testing endpoints, a team integrating third-party APIs, or a freelancer working with client projects — DevBook fits your workflow.</p>
 
         <div class="persona-grid">
             <div class="persona-card">
@@ -1140,7 +1147,7 @@
     <section class="section" style="padding-top: 0;">
         <div class="section-label">Comparison</div>
         <h2 class="section-title">DevBook vs the alternatives</h2>
-        <p class="section-desc">How does DevBook stack up against the other API tools developers reach for?</p>
+        <p class="section-desc">Side-by-side on the things that matter: pricing, simplicity, and setup time.</p>
 
         <div class="comparison-wrap">
             <table>
@@ -1243,8 +1250,8 @@
     <!-- ── Security ── -->
     <section class="section" id="security" style="padding-top: 0;">
         <div class="section-label">Security</div>
-        <h2 class="section-title">Your keys are safe here</h2>
-        <p class="section-desc">We built DevBook knowing that developers trust us with their most sensitive credentials. Here's how we protect them.</p>
+        <h2 class="section-title">How we protect your API keys</h2>
+        <p class="section-desc">You're trusting us with credentials — here's exactly what we do with them.</p>
 
         <div class="security-grid">
             <div class="security-card">
@@ -1283,7 +1290,7 @@
                     <li>All HTTP methods</li>
                     <li>Unlimited requests</li>
                 </ul>
-                <a href="/login" class="btn-secondary">Get started free</a>
+                <a href="/login" class="btn-secondary">Create free account →</a>
             </div>
             <div class="pricing-card featured">
                 <span class="pricing-tag">Teams</span>
@@ -1298,11 +1305,22 @@
                     <li>Shared templates & vault</li>
                     <li>Priority support</li>
                 </ul>
-                <a href="/login?plan=pro" class="btn-primary">Start 14-day free trial</a>
+                <a href="/login?plan=pro" class="btn-primary">Start 14-day Pro trial — no card needed →</a>
             </div>
         </div>
 
         <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">No credit card required · <a href="/pricing" style="color: var(--accent);">See full pricing details →</a></p>
+    </section>
+
+    <!-- ── Founder Block ── -->
+    <section class="section" style="padding-bottom: 2rem;">
+        <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+            <div class="section-label">Built by a real person</div>
+            <div style="width: 72px; height: 72px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; color: var(--bg); margin: 0 auto 1.25rem;">K</div>
+            <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 0.75rem;">Hey, I'm Kristie 👋</h2>
+            <p style="font-size: 1rem; color: var(--text-muted); line-height: 1.8; max-width: 560px; margin: 0 auto;">I built DevBook because I got frustrated with how complicated and expensive API testing tools have become. I'm a self-taught developer — my background is actually in fire science and sociology. I wanted a simple tool that lets you open a browser tab, test an API, and get back to work. That's DevBook.</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.25rem;">Questions about team setup, security, or migration? <a href="mailto:kristie@devbook.digital" style="color: var(--accent); font-weight: 600;">Talk to me directly →</a></p>
+        </div>
     </section>
 
     <!-- ── Closing CTA ── -->
@@ -1310,10 +1328,10 @@
         <h2>Open a tab. Test an API.</h2>
         <p>No download. No credit card. No seat licenses. The API workbench that gets out of your way.</p>
         <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative;">
-            <a href="/login" class="btn-primary lg">Start free →</a>
-            <a href="#how-it-works" class="btn-secondary lg">See how it works ↓</a>
+            <a href="/login" class="btn-primary lg">Create free account →</a>
+            <a href="mailto:kristie@devbook.digital" class="btn-secondary lg">Talk to the founder</a>
         </div>
-        <p class="closing-note">Free for individuals · Teams $19/mo flat</p>
+        <p class="closing-note">Free for individuals · Teams $19/mo flat · 14-day Pro trial, no card required</p>
     </section>
 
     <!-- ── Footer ── -->
@@ -1341,6 +1359,7 @@
             </div>
             <div class="footer-col">
                 <h4>Support</h4>
+                <a href="mailto:kristie@devbook.digital">Talk to the founder</a>
                 <a href="mailto:support@devbook.digital">support@devbook.digital</a>
                 <a href="https://github.com/DevBookDigital/DevBook" target="_blank" rel="noopener">GitHub</a>
             </div>
