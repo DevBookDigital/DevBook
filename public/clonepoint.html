@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClonePoint — Clone Any API. Mock It Instantly. | DevBook</title>
+    <meta name="description" content="Paste a link to any OpenAPI or Swagger spec and walk away with a runnable Express mock backend, cURL templates, and a hosted endpoint. By DevBook.">
+    <meta name="keywords" content="api mock, openapi clone, swagger mock server, api testing, express mock, api endpoint generator, devbook clonepoint">
+    <link rel="canonical" href="https://devbook.digital/clonepoint">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="ClonePoint — Clone Any API. Mock It Instantly.">
+    <meta property="og:description" content="Paste an OpenAPI spec URL — get a runnable Express mock backend, cURL templates, and a hosted endpoint. 14 days free.">
+    <meta property="og:url" content="https://devbook.digital/clonepoint">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DevBook">
+    <meta property="og:image" content="https://devbook.digital/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ClonePoint — Clone Any API. Mock It Instantly.">
+    <meta name="twitter:description" content="Paste an OpenAPI spec URL — get a runnable Express mock backend, cURL templates, and a hosted endpoint.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #22d68a;
+            --accent-dim: #1a9e66;
+            --accent-glow: rgba(34, 214, 138, 0.15);
+            --lime: #d6f600;
+            --lime-glow: rgba(214, 246, 0, 0.12);
+            --orange: #ff8c42;
+            --purple: #a78bfa;
+            --red: #f87171;
+            --blue: #60a5fa;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--bg);
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-center a {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.15s;
+        }
+
+        .nav-center a:hover { color: var(--text); }
+        .nav-center a.active { color: var(--accent); }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.35rem;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.15s, transform 0.15s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover { background: var(--accent-dim); transform: translateY(-1px); }
+
+        .btn-primary.lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.35rem;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+
+        .btn-secondary:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+        .btn-secondary.lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 5.5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        h1 .highlight { color: var(--accent); }
+        h1 .dim { color: var(--text-muted); font-style: italic; font-weight: 400; }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-pricing {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-pricing .tag {
+            background: var(--accent);
+            color: var(--bg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-pricing span:last-child {
+            color: var(--text-muted);
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-trust {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-trust .sep {
+            width: 4px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 50%;
+        }
+
+        /* ── Terminal Demo ── */
+        .terminal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03), 8px 8px 0 0 var(--accent);
+        }
+
+        .terminal-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 18px;
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot:nth-child(1) { background: #ff5f57; }
+        .terminal-dot:nth-child(2) { background: #ffbd2e; }
+        .terminal-dot:nth-child(3) { background: #28c840; }
+
+        .terminal-title {
+            margin-left: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            overflow-x: auto;
+        }
+
+        .terminal-body .prompt { color: var(--text); }
+        .terminal-body .cmd { color: var(--accent); }
+        .terminal-body .url { color: var(--blue); }
+        .terminal-body .ok { color: var(--accent); }
+        .terminal-body .dim { color: var(--text-muted); }
+        .terminal-body .key-val { color: var(--orange); }
+        .terminal-body .success { color: var(--accent); font-weight: 600; }
+
+        .terminal-body .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--accent);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ── Endpoint Pills ── */
+        .endpoint-strip {
+            padding: 3rem 2rem;
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .endpoint-scroll {
+            display: flex;
+            gap: 1rem;
+            animation: scrollEndpoints 20s linear infinite;
+            width: max-content;
+        }
+
+        .endpoint-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+
+        .endpoint-pill .method {
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .method-get { background: rgba(34, 214, 138, 0.15); color: var(--accent); }
+        .method-post { background: rgba(96, 165, 250, 0.15); color: var(--blue); }
+        .method-put { background: rgba(255, 140, 66, 0.15); color: var(--orange); }
+        .method-delete { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+        .method-patch { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+
+        .endpoint-pill .path { color: var(--text-muted); }
+
+        @keyframes scrollEndpoints {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ── Section base ── */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.9rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 3.5rem;
+            line-height: 1.7;
+        }
+
+        /* ── Features grid ── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .feature-card:hover { border-color: var(--accent-dim); }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-glow);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── How it works ── */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .step-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .step-card:hover { border-color: var(--accent-dim); }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+            letter-spacing: -0.2px;
+        }
+
+        .step-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── FAQ ── */
+        .faq-list {
+            max-width: 700px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+
+        .faq-item:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-q {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            cursor: default;
+        }
+
+        .faq-a {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* ── Closing CTA ── */
+        .closing {
+            text-align: center;
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .closing::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .closing h2 {
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            max-width: 700px;
+            margin: 0 auto 1.25rem;
+            position: relative;
+        }
+
+        .closing p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto 2.5rem;
+            position: relative;
+        }
+
+        .closing-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1.25rem;
+            position: relative;
+        }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            transition: color 0.15s;
+        }
+
+        .footer-links a:hover { color: var(--accent); }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.25rem; }
+            .nav-center { display: none; }
+            .hero { padding: 7rem 1.25rem 3rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .section { padding: 4rem 1.25rem; }
+            h1 { letter-spacing: -1px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .hero-cta-group { flex-direction: column; gap: 0.75rem; }
+            .hero-trust { flex-wrap: wrap; }
+            .endpoint-strip { padding: 2rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Nav ── -->
+    <nav>
+        <a href="/" style="text-decoration:none">
+            <div class="logo">
+                <div class="logo-mark">D</div>
+                DevBook
+            </div>
+        </a>
+        <div class="nav-center">
+            <a href="/">Workbench</a>
+            <a href="/clonepoint" class="active">ClonePoint</a>
+            <a href="/#features">Features</a>
+            <a href="/pricing">Pricing</a>
+            <a href="mailto:kristie@devbook.digital">Contact</a>
+        </div>
+        <a href="/login" class="btn-primary">Start free →</a>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            New from DevBook — API mocking, instantly
+        </div>
+
+        <div class="hero-grid">
+            <div>
+                <h1>Clone any API.<br><span class="dim">Mock it</span> <span class="highlight">instantly.</span></h1>
+                <p class="hero-sub">Paste a link to any OpenAPI / Swagger spec — or a docs page — and walk away with a runnable Express mock backend, cURL templates, and a hosted endpoint. One API key for everything.</p>
+
+                <div class="hero-pricing">
+                    <span class="tag">14 days free</span>
+                    <span>then $15/month — cancel anytime</span>
+                </div>
+
+                <div class="hero-cta-group">
+                    <a href="/login" class="btn-primary lg">Get started — it's free →</a>
+                    <a href="#how" class="btn-secondary lg">See how it works ↓</a>
+                </div>
+
+                <div class="hero-trust">
+                    <span>No credit card</span>
+                    <span class="sep"></span>
+                    <span>OpenAPI 3 / Swagger 2</span>
+                    <span class="sep"></span>
+                    <span>Node.js output</span>
+                </div>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-bar">
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <span class="terminal-title">~/clonepoint</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="prompt">$</span> <span class="cmd">clonepoint clone</span> <span class="url">https://api.stripe.com/openapi.json</span><br><br>
+                    <span class="dim">→ fetching spec</span> ........................ <span class="ok">ok</span><br>
+                    <span class="dim">→ parsing  328 endpoints</span> ............... <span class="ok">ok</span><br>
+                    <span class="dim">→ generating express server</span> ............ <span class="ok">ok</span><br>
+                    <span class="dim">→ writing curl templates</span> ............... <span class="ok">ok</span><br><br>
+                    <span class="success">✓ ready</span>  <span class="url">https://clonepoint.dev/mock/stripe-mock</span><br>
+                    &nbsp;&nbsp;<span class="dim">key</span>    <span class="key-val">ak_********************************</span><br><br>
+                    <span class="prompt">$</span> <span class="cmd">curl</span> -X GET \<br>
+                    &nbsp;&nbsp;<span class="url">'https://clonepoint.dev/mock/stripe-mock/v1/charges'</span> \<br>
+                    &nbsp;&nbsp;-H <span class="key-val">'X-API-Key: ak_••••'</span><span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Scrolling Endpoint Strip ── -->
+    <div class="endpoint-strip">
+        <div class="endpoint-scroll">
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/users/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-put">PUT</span><span class="path">/v1/users/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-delete">DELETE</span><span class="path">/v1/users/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/products</span></div>
+            <div class="endpoint-pill"><span class="method method-post">POST</span><span class="path">/v1/orders</span></div>
+            <div class="endpoint-pill"><span class="method method-patch">PATCH</span><span class="path">/v1/orders/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/charges</span></div>
+            <div class="endpoint-pill"><span class="method method-post">POST</span><span class="path">/v1/customers</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/invoices</span></div>
+            <div class="endpoint-pill"><span class="method method-delete">DELETE</span><span class="path">/v1/subscriptions/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-post">POST</span><span class="path">/v1/refunds</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/payment_intents</span></div>
+            <!-- duplicate for seamless scroll -->
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/users/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-put">PUT</span><span class="path">/v1/users/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-delete">DELETE</span><span class="path">/v1/users/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/products</span></div>
+            <div class="endpoint-pill"><span class="method method-post">POST</span><span class="path">/v1/orders</span></div>
+            <div class="endpoint-pill"><span class="method method-patch">PATCH</span><span class="path">/v1/orders/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/charges</span></div>
+            <div class="endpoint-pill"><span class="method method-post">POST</span><span class="path">/v1/customers</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/invoices</span></div>
+            <div class="endpoint-pill"><span class="method method-delete">DELETE</span><span class="path">/v1/subscriptions/{id}</span></div>
+            <div class="endpoint-pill"><span class="method method-post">POST</span><span class="path">/v1/refunds</span></div>
+            <div class="endpoint-pill"><span class="method method-get">GET</span><span class="path">/v1/payment_intents</span></div>
+        </div>
+    </div>
+
+    <!-- ── Capabilities ── -->
+    <section class="section" id="features">
+        <div class="section-label">Capabilities</div>
+        <h2 class="section-title">Everything a backend developer actually wanted</h2>
+        <p class="section-desc">Built for developers who are tired of writing throwaway mocks. Paste a URL, get a server.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant mock server</h3>
+                <p>From spec to running server in seconds. ClonePoint generates a full Express mock that returns realistic sample data for every endpoint.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">{}</div>
+                <h3>OpenAPI 3 & Swagger 2</h3>
+                <p>Paste any OpenAPI 3.x or Swagger 2.0 spec — JSON or YAML. ClonePoint auto-detects the format and parses every endpoint, parameter, and schema.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">$_</div>
+                <h3>cURL templates for every endpoint</h3>
+                <p>Copy-pasteable cURL commands for every endpoint, against both the source API and your mock. Ready to drop into scripts or docs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Download the Express project</h3>
+                <p>Grab the full Express project — server.js, package.json, README — ready to run locally or deploy anywhere. It's your code.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How it works ── -->
+    <section class="section" id="how">
+        <div class="section-label">Workflow</div>
+        <h2 class="section-title">Three steps. <span style="color: var(--text-muted); font-style: italic;">No CLI required.</span></h2>
+        <p class="section-desc">From API spec to running mock in under a minute.</p>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-num">01</div>
+                <h3>Paste a URL</h3>
+                <p>Any OpenAPI 3, Swagger 2, JSON, or YAML — we figure it out.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">02</div>
+                <h3>Review endpoints</h3>
+                <p>Inspect every method, params, and example response before generating.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">03</div>
+                <h3>Run / share</h3>
+                <p>Hit the hosted mock or download Express source as a zip. Share the mock URL with your team.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="section" id="faq">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title">Common questions</h2>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-q">What spec formats are supported?</div>
+                <div class="faq-a">OpenAPI 3.0, 3.1, and Swagger 2.0 in both JSON and YAML formats. If it's a valid spec, ClonePoint can parse it.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">How long do hosted mocks stay live?</div>
+                <div class="faq-a">Mocks stay live as long as your account is active. They're accessible via a unique URL with your API key — perfect for development, testing, and demos.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Can I customize the mock responses?</div>
+                <div class="faq-a">Yes. Download the Express source, modify the handlers however you want, and redeploy. You own the generated code.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What's the difference between ClonePoint and DevBook?</div>
+                <div class="faq-a">DevBook is your team's API workbench for building, testing, and managing API requests. ClonePoint is a tool for cloning entire API specs into mock servers. They complement each other — use DevBook to test against your ClonePoint mocks.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Is there a free tier?</div>
+                <div class="faq-a">Every account starts with a 14-day free trial, no credit card required. After that it's $15/month — cancel anytime.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Closing CTA ── -->
+    <section class="closing">
+        <h2>Stop writing mocks.<br><span class="highlight">Start cloning.</span></h2>
+        <p>Paste a spec, get a server. It takes less than a minute.</p>
+        <div class="hero-cta-group" style="justify-content: center;">
+            <a href="/login" class="btn-primary lg">Get started — it's free →</a>
+        </div>
+        <p class="closing-note">14-day free trial · No credit card required</p>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div class="logo" style="font-size: 1.1rem;">
+                    <div class="logo-mark" style="width: 24px; height: 24px; font-size: 0.75rem;">D</div>
+                    DevBook
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;">© 2026 DevBook Digital. Built for developers.</p>
+            </div>
+            <div class="footer-links">
+                <a href="/">Workbench</a>
+                <a href="/clonepoint">ClonePoint</a>
+                <a href="/pricing">Pricing</a>
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+                <a href="mailto:kristie@devbook.digital">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

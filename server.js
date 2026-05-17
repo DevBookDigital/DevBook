@@ -55,7 +55,7 @@ app.use(express.text({ limit: '2mb' }));
 
 // No-cache for HTML
 app.use((req, res, next) => {
-  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login' || req.path === '/pricing' || req.path.startsWith('/blog')) {
+  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login' || req.path === '/pricing' || req.path === '/clonepoint' || req.path.startsWith('/blog')) {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   }
   next();
@@ -96,6 +96,16 @@ app.get('/pricing', (req, res) => {
     res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
   } else {
     res.status(404).send('Pricing page not found');
+  }
+});
+
+// ClonePoint landing page
+app.get('/clonepoint', (req, res) => {
+  const htmlPath = path.join(__dirname, 'public', 'clonepoint.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('ClonePoint page not found');
   }
 });
 
