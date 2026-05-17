@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClonePoint — API Cloning Tool | DevBook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --surface-3: #222233;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #22d68a;
+            --accent-dim: #1a9e66;
+            --accent-glow: rgba(34, 214, 138, 0.15);
+            --orange: #ff8c42;
+            --purple: #a78bfa;
+            --blue: #60a5fa;
+            --yellow: #fbbf24;
+            --red: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* ── Top Bar ── */
+        .top-bar {
+            height: 56px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--bg);
+        }
+
+        .logo .sub {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 14px;
+            margin-left: 4px;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-email {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-sm:hover { border-color: var(--accent); }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+        .btn-accent:hover { background: var(--accent-dim); border-color: var(--accent-dim); }
+
+        /* ── Layout ── */
+        .app-layout {
+            display: flex;
+            height: calc(100vh - 56px);
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 280px;
+            border-right: 1px solid var(--border);
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .sidebar-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .project-item {
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .project-item:hover { background: var(--surface-2); }
+        .project-item.active { background: var(--accent-glow); border: 1px solid rgba(34, 214, 138, 0.2); }
+
+        .project-item .name {
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+
+        .project-item .meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .project-item .del-btn {
+            opacity: 0;
+            background: none;
+            border: none;
+            color: var(--red);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            transition: opacity 0.15s;
+        }
+        .project-item:hover .del-btn { opacity: 0.6; }
+        .project-item .del-btn:hover { opacity: 1; }
+
+        .sidebar-empty {
+            padding: 24px 16px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ── Main Panel ── */
+        .main-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ── Input Bar ── */
+        .input-bar {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .input-bar input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        .input-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .input-bar input::placeholder { color: var(--text-muted); opacity: 0.5; }
+
+        .clone-btn {
+            padding: 12px 28px;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .clone-btn:hover { background: var(--accent-dim); }
+        .clone-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ── Content area ── */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        /* ── Welcome state ── */
+        .welcome-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .welcome-state .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .welcome-state h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .welcome-state p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .example-urls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .example-url {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .example-url:hover { border-color: var(--accent); background: var(--accent-glow); }
+
+        .example-url .label {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .example-url .url-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ── Loading state ── */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 16px;
+        }
+
+        .spinner-lg {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 15px; }
+
+        /* ── Error ── */
+        .error-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--red);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        /* ── Results ── */
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .results-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .results-header .stats {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* ── Tabs ── */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .tab:hover { color: var(--text); }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* ── Endpoints table ── */
+        .endpoint-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .endpoint-table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .endpoint-table td {
+            padding: 10px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(42, 42, 58, 0.5);
+            vertical-align: top;
+        }
+
+        .endpoint-table tr:hover td {
+            background: rgba(34, 214, 138, 0.03);
+        }
+
+        .method-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .method-GET { background: rgba(34, 214, 138, 0.15); color: var(--accent); }
+        .method-POST { background: rgba(96, 165, 250, 0.15); color: var(--blue); }
+        .method-PUT { background: rgba(255, 140, 66, 0.15); color: var(--orange); }
+        .method-PATCH { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+        .method-DELETE { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+        .path-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        .desc-text {
+            color: var(--text-muted);
+            font-size: 12px;
+            max-width: 300px;
+        }
+
+        .param-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .param-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        /* ── Code block ── */
+        .code-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .code-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-block-header .filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            font-size: 12px;
+            padding: 4px 10px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .code-block pre {
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: var(--text);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* ── cURL list ── */
+        .curl-item {
+            margin-bottom: 12px;
+        }
+
+        .curl-item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .curl-item-header:hover { background: var(--surface-2); }
+
+        .curl-item-header .toggle {
+            color: var(--text-muted);
+            font-size: 12px;
+            transition: transform 0.15s;
+        }
+        .curl-item-header .toggle.open { transform: rotate(90deg); }
+
+        .curl-item-body {
+            display: none;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 12px 16px;
+        }
+        .curl-item-body.open { display: block; }
+
+        .curl-item-body pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--text);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* ── Search / Filter ── */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+
+        .filter-bar input {
+            flex: 1;
+            padding: 8px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+        }
+        .filter-bar input:focus { border-color: var(--accent); }
+
+        .method-filter {
+            display: flex;
+            gap: 4px;
+        }
+
+        .method-filter-btn {
+            padding: 5px 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.15s;
+        }
+        .method-filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+        .method-filter-btn:hover { border-color: var(--accent); }
+
+        /* ── Tab panels ── */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .input-bar { flex-direction: column; }
+            .input-bar input { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Top Bar ── -->
+    <div class="top-bar">
+        <a href="/clonepoint" class="logo">
+            <div class="logo-mark">D</div>
+            DevBook <span class="sub">/ ClonePoint</span>
+        </a>
+        <div class="top-bar-right">
+            <span class="user-email" id="user-email"></span>
+            <a href="/app" class="btn-sm">← Workbench</a>
+            <button class="btn-sm" onclick="logout()">Sign Out</button>
+        </div>
+    </div>
+
+    <!-- ── App Layout ── -->
+    <div class="app-layout">
+
+        <!-- ── Sidebar ── -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Projects</h3>
+                <button class="btn-sm btn-accent" onclick="newProject()" style="padding: 4px 10px; font-size: 12px;">+ New</button>
+            </div>
+            <div class="sidebar-list" id="project-list">
+                <div class="sidebar-empty">
+                    No projects yet.<br>Paste a spec URL to get started.
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Main ── -->
+        <div class="main-panel">
+            <div class="input-bar">
+                <input type="text" id="spec-url" placeholder="Paste an OpenAPI / Swagger spec URL..." spellcheck="false" autocomplete="off">
+                <button class="clone-btn" id="clone-btn" onclick="cloneSpec()">Clone API</button>
+            </div>
+
+            <div class="content-area" id="content-area">
+                <!-- Welcome state -->
+                <div id="state-welcome" class="welcome-state">
+                    <div class="icon">🔗</div>
+                    <h2>Clone any API</h2>
+                    <p>Paste an OpenAPI 3.x or Swagger 2.0 spec URL and get a mock Express server, cURL templates, and endpoint documentation — instantly.</p>
+                    <div class="example-urls">
+                        <div class="example-url" onclick="useExample('https://petstore3.swagger.io/api/v3/openapi.json')">
+                            <span class="label">Petstore (OpenAPI 3)</span>
+                            <span class="url-text">petstore3.swagger.io/api/v3/openapi.json</span>
+                        </div>
+                        <div class="example-url" onclick="useExample('https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json')">
+                            <span class="label">Stripe API</span>
+                            <span class="url-text">github.com/stripe/openapi/…/spec3.json</span>
+                        </div>
+                        <div class="example-url" onclick="useExample('https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json')">
+                            <span class="label">GitHub API</span>
+                            <span class="url-text">github.com/github/rest-api-description/…</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading state -->
+                <div id="state-loading" class="loading-state" style="display:none">
+                    <div class="spinner-lg"></div>
+                    <p id="loading-text">Fetching spec...</p>
+                </div>
+
+                <!-- Results state -->
+                <div id="state-results" style="display:none">
+                    <div class="results-header">
+                        <div>
+                            <h2 id="result-title">API Name</h2>
+                            <div class="stats" id="result-stats">0 endpoints</div>
+                        </div>
+                        <div class="results-actions">
+                            <button class="btn-sm" onclick="saveProject()">💾 Save Project</button>
+                            <button class="btn-sm btn-accent" onclick="downloadZip()">⬇ Download Express Project</button>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="endpoints" onclick="switchTab('endpoints')">Endpoints</div>
+                        <div class="tab" data-tab="curl" onclick="switchTab('curl')">cURL Templates</div>
+                        <div class="tab" data-tab="server" onclick="switchTab('server')">Express Server</div>
+                    </div>
+
+                    <!-- Endpoints tab -->
+                    <div class="tab-panel active" id="panel-endpoints">
+                        <div class="filter-bar">
+                            <input type="text" id="endpoint-search" placeholder="Search endpoints..." oninput="filterEndpoints()">
+                            <div class="method-filter">
+                                <button class="method-filter-btn active" data-method="all" onclick="toggleMethodFilter('all')">ALL</button>
+                                <button class="method-filter-btn" data-method="GET" onclick="toggleMethodFilter('GET')">GET</button>
+                                <button class="method-filter-btn" data-method="POST" onclick="toggleMethodFilter('POST')">POST</button>
+                                <button class="method-filter-btn" data-method="PUT" onclick="toggleMethodFilter('PUT')">PUT</button>
+                                <button class="method-filter-btn" data-method="PATCH" onclick="toggleMethodFilter('PATCH')">PATCH</button>
+                                <button class="method-filter-btn" data-method="DELETE" onclick="toggleMethodFilter('DELETE')">DEL</button>
+                            </div>
+                        </div>
+                        <table class="endpoint-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:80px">Method</th>
+                                    <th>Path</th>
+                                    <th>Description</th>
+                                    <th>Parameters</th>
+                                </tr>
+                            </thead>
+                            <tbody id="endpoints-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- cURL tab -->
+                    <div class="tab-panel" id="panel-curl">
+                        <div class="filter-bar">
+                            <input type="text" id="curl-search" placeholder="Search cURL commands..." oninput="filterCurls()">
+                        </div>
+                        <div id="curl-list"></div>
+                    </div>
+
+                    <!-- Express server tab -->
+                    <div class="tab-panel" id="panel-server">
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span class="filename">server.js</span>
+                                <button class="copy-btn" onclick="copyCode('server-code')">Copy</button>
+                            </div>
+                            <pre id="server-code"></pre>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span class="filename">package.json</span>
+                                <button class="copy-btn" onclick="copyCode('package-code')">Copy</button>
+                            </div>
+                            <pre id="package-code"></pre>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span class="filename">README.md</span>
+                                <button class="copy-btn" onclick="copyCode('readme-code')">Copy</button>
+                            </div>
+                            <pre id="readme-code"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // =====================
+    // AUTH
+    // =====================
+    const token = localStorage.getItem('devbook_token');
+    const user = JSON.parse(localStorage.getItem('devbook_user') || '{}');
+
+    if (!token) {
+        window.location.href = '/login';
+    } else {
+        document.getElementById('user-email').textContent = user.email || '';
+    }
+
+    function logout() {
+        localStorage.removeItem('devbook_token');
+        localStorage.removeItem('devbook_user');
+        window.location.href = '/clonepoint';
+    }
+
+    function authHeaders() {
+        return { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
+    }
+
+    // =====================
+    // STATE
+    // =====================
+    let currentSpec = null;      // parsed spec object
+    let currentEndpoints = [];   // extracted endpoints
+    let currentSpecUrl = '';     // original URL
+    let activeMethodFilter = 'all';
+    let projects = [];
+
+    // =====================
+    // SIDEBAR / PROJECTS
+    // =====================
+    async function loadProjects() {
+        try {
+            const res = await fetch('/api/clonepoint/projects', { headers: authHeaders() });
+            if (!res.ok) return;
+            projects = await res.json();
+            renderProjects();
+        } catch (e) { console.error('Failed to load projects:', e); }
+    }
+
+    function renderProjects() {
+        const list = document.getElementById('project-list');
+        if (projects.length === 0) {
+            list.innerHTML = '<div class="sidebar-empty">No projects yet.<br>Paste a spec URL to get started.</div>';
+            return;
+        }
+        list.innerHTML = projects.map(p => `
+            <div class="project-item" onclick="loadProject(${p.id})">
+                <div>
+                    <div class="name">${esc(p.name)}</div>
+                    <div class="meta">${p.endpoints_count} endpoints · ${timeAgo(p.created_at)}</div>
+                </div>
+                <button class="del-btn" onclick="event.stopPropagation(); deleteProject(${p.id})">✕</button>
+            </div>
+        `).join('');
+    }
+
+    async function loadProject(id) {
+        showLoading('Loading project...');
+        try {
+            const res = await fetch(`/api/clonepoint/projects/${id}`, { headers: authHeaders() });
+            if (!res.ok) throw new Error('Failed to load');
+            const project = await res.json();
+            if (project.spec_data) {
+                currentSpecUrl = project.spec_url || '';
+                document.getElementById('spec-url').value = currentSpecUrl;
+                processSpec(project.spec_data, project.name);
+            }
+        } catch (e) {
+            showError('Failed to load project: ' + e.message);
+        }
+    }
+
+    async function saveProject() {
+        if (!currentSpec || !currentEndpoints.length) return;
+        const name = currentSpec.info?.title || 'Untitled API';
+        try {
+            const res = await fetch('/api/clonepoint/projects', {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({
+                    name,
+                    spec_url: currentSpecUrl,
+                    spec_data: currentSpec,
+                    endpoints_count: currentEndpoints.length
+                })
+            });
+            if (!res.ok) throw new Error('Failed to save');
+            await loadProjects();
+        } catch (e) {
+            alert('Failed to save project: ' + e.message);
+        }
+    }
+
+    async function deleteProject(id) {
+        if (!confirm('Delete this project?')) return;
+        try {
+            await fetch(`/api/clonepoint/projects/${id}`, { method: 'DELETE', headers: authHeaders() });
+            await loadProjects();
+        } catch (e) { alert('Failed to delete'); }
+    }
+
+    function newProject() {
+        currentSpec = null;
+        currentEndpoints = [];
+        currentSpecUrl = '';
+        document.getElementById('spec-url').value = '';
+        showWelcome();
+    }
+
+    // =====================
+    // CLONE
+    // =====================
+    async function cloneSpec() {
+        const url = document.getElementById('spec-url').value.trim();
+        if (!url) return;
+        currentSpecUrl = url;
+
+        showLoading('Fetching spec...');
+        try {
+            const res = await fetch('/api/clonepoint/fetch-spec', {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ url })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Failed to fetch');
+
+            showLoading('Parsing spec...');
+            let spec;
+            try {
+                spec = JSON.parse(data.content);
+            } catch {
+                // Try YAML
+                if (typeof jsyaml !== 'undefined') {
+                    spec = jsyaml.load(data.content);
+                } else {
+                    throw new Error('Could not parse spec as JSON or YAML');
+                }
+            }
+
+            if (!spec || (!spec.paths && !spec.openapi && !spec.swagger)) {
+                throw new Error('Not a valid OpenAPI/Swagger spec — no paths found');
+            }
+
+            const name = spec.info?.title || 'Untitled API';
+            processSpec(spec, name);
+        } catch (e) {
+            showError('Failed to clone: ' + e.message);
+        }
+    }
+
+    function useExample(url) {
+        document.getElementById('spec-url').value = url;
+        cloneSpec();
+    }
+
+    // =====================
+    // SPEC PROCESSING
+    // =====================
+    function processSpec(spec, name) {
+        currentSpec = spec;
+        currentEndpoints = extractEndpoints(spec);
+
+        showLoading('Generating mock server...');
+
+        setTimeout(() => {
+            const title = name || spec.info?.title || 'Cloned API';
+            document.getElementById('result-title').textContent = title;
+
+            const methodCounts = {};
+            currentEndpoints.forEach(ep => {
+                methodCounts[ep.method] = (methodCounts[ep.method] || 0) + 1;
+            });
+            const statsText = `${currentEndpoints.length} endpoints · ` +
+                Object.entries(methodCounts).map(([m, c]) => `${c} ${m}`).join(', ');
+            document.getElementById('result-stats').textContent = statsText;
+
+            renderEndpoints();
+            renderCurls();
+            renderServerCode();
+            showResults();
+        }, 300);
+    }
+
+    function extractEndpoints(spec) {
+        const endpoints = [];
+        const paths = spec.paths || {};
+        const basePath = spec.basePath || '';
+        const methods = ['get', 'post', 'put', 'patch', 'delete', 'head', 'options'];
+
+        for (const [path, pathObj] of Object.entries(paths)) {
+            if (!pathObj || typeof pathObj !== 'object') continue;
+
+            for (const method of methods) {
+                const op = pathObj[method];
+                if (!op) continue;
+
+                const params = [];
+                // Path-level params
+                if (Array.isArray(pathObj.parameters)) {
+                    pathObj.parameters.forEach(p => {
+                        if (p && p.name) params.push({ name: p.name, in: p.in || 'query', required: !!p.required, type: p.schema?.type || p.type || 'string' });
+                    });
+                }
+                // Operation-level params
+                if (Array.isArray(op.parameters)) {
+                    op.parameters.forEach(p => {
+                        if (p && p.name) params.push({ name: p.name, in: p.in || 'query', required: !!p.required, type: p.schema?.type || p.type || 'string' });
+                    });
+                }
+
+                // Extract response schema
+                let responseSchema = null;
+                const responses = op.responses || {};
+                const successCode = Object.keys(responses).find(c => c.startsWith('2')) || Object.keys(responses)[0];
+                if (successCode && responses[successCode]) {
+                    const resp = responses[successCode];
+                    if (resp.content) {
+                        const jsonContent = resp.content['application/json'] || resp.content[Object.keys(resp.content)[0]];
+                        if (jsonContent?.schema) responseSchema = jsonContent.schema;
+                    } else if (resp.schema) {
+                        responseSchema = resp.schema;
+                    }
+                }
+
+                endpoints.push({
+                    method: method.toUpperCase(),
+                    path: basePath + path,
+                    summary: op.summary || op.description || '',
+                    operationId: op.operationId || '',
+                    tags: op.tags || [],
+                    parameters: params,
+                    responseSchema,
+                    hasRequestBody: !!op.requestBody
+                });
+            }
+        }
+
+        return endpoints;
+    }
+
+    // =====================
+    // SAMPLE DATA GENERATION
+    // =====================
+    function generateSampleValue(schema, spec, depth = 0) {
+        if (!schema || depth > 5) return null;
+
+        // Resolve $ref
+        if (schema.$ref) {
+            schema = resolveRef(schema.$ref, spec);
+            if (!schema) return null;
+        }
+
+        if (schema.example !== undefined) return schema.example;
+        if (schema.default !== undefined) return schema.default;
+        if (schema.enum && schema.enum.length > 0) return schema.enum[0];
+
+        const type = schema.type;
+
+        if (type === 'string') {
+            if (schema.format === 'date-time') return '2024-01-15T10:30:00Z';
+            if (schema.format === 'date') return '2024-01-15';
+            if (schema.format === 'email') return 'user@example.com';
+            if (schema.format === 'uri' || schema.format === 'url') return 'https://example.com';
+            if (schema.format === 'uuid') return '550e8400-e29b-41d4-a716-446655440000';
+            return 'string';
+        }
+        if (type === 'integer' || type === 'number') return schema.format === 'float' || schema.format === 'double' ? 3.14 : 42;
+        if (type === 'boolean') return true;
+        if (type === 'array') {
+            const item = generateSampleValue(schema.items, spec, depth + 1);
+            return item !== null ? [item] : [];
+        }
+        if (type === 'object' || schema.properties) {
+            const obj = {};
+            const props = schema.properties || {};
+            let count = 0;
+            for (const [key, propSchema] of Object.entries(props)) {
+                if (count >= 8) break; // limit properties
+                obj[key] = generateSampleValue(propSchema, spec, depth + 1);
+                count++;
+            }
+            return obj;
+        }
+
+        // allOf / oneOf / anyOf
+        if (schema.allOf) {
+            const merged = {};
+            schema.allOf.forEach(s => {
+                const val = generateSampleValue(s, spec, depth + 1);
+                if (val && typeof val === 'object') Object.assign(merged, val);
+            });
+            return Object.keys(merged).length > 0 ? merged : null;
+        }
+        if (schema.oneOf?.[0]) return generateSampleValue(schema.oneOf[0], spec, depth + 1);
+        if (schema.anyOf?.[0]) return generateSampleValue(schema.anyOf[0], spec, depth + 1);
+
+        return null;
+    }
+
+    function resolveRef(ref, spec) {
+        if (!ref || !ref.startsWith('#/')) return null;
+        const parts = ref.slice(2).split('/');
+        let current = spec;
+        for (const part of parts) {
+            if (!current || typeof current !== 'object') return null;
+            current = current[part.replace(/~1/g, '/').replace(/~0/g, '~')];
+        }
+        return current || null;
+    }
+
+    // =====================
+    // RENDER: ENDPOINTS TABLE
+    // =====================
+    function renderEndpoints() {
+        const tbody = document.getElementById('endpoints-tbody');
+        const filtered = getFilteredEndpoints();
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:40px">No matching endpoints</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(ep => `
+            <tr data-method="${ep.method}" data-path="${esc(ep.path.toLowerCase())}">
+                <td><span class="method-badge method-${ep.method}">${ep.method}</span></td>
+                <td><span class="path-text">${esc(ep.path)}</span></td>
+                <td><span class="desc-text">${esc(ep.summary).substring(0, 120) || '—'}</span></td>
+                <td>
+                    <div class="param-tags">
+                        ${ep.parameters.slice(0, 5).map(p => `<span class="param-tag">${esc(p.name)}</span>`).join('')}
+                        ${ep.parameters.length > 5 ? `<span class="param-tag">+${ep.parameters.length - 5}</span>` : ''}
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function getFilteredEndpoints() {
+        const search = (document.getElementById('endpoint-search')?.value || '').toLowerCase();
+        return currentEndpoints.filter(ep => {
+            if (activeMethodFilter !== 'all' && ep.method !== activeMethodFilter) return false;
+            if (search && !ep.path.toLowerCase().includes(search) && !(ep.summary || '').toLowerCase().includes(search)) return false;
+            return true;
+        });
+    }
+
+    function filterEndpoints() { renderEndpoints(); }
+
+    function toggleMethodFilter(method) {
+        activeMethodFilter = method;
+        document.querySelectorAll('.method-filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.method === method);
+        });
+        renderEndpoints();
+    }
+
+    // =====================
+    // RENDER: CURL TEMPLATES
+    // =====================
+    function renderCurls() {
+        const container = document.getElementById('curl-list');
+        const baseUrl = currentSpec.servers?.[0]?.url || currentSpec.host
+            ? `${currentSpec.schemes?.[0] || 'https'}://${currentSpec.host}${currentSpec.basePath || ''}`
+            : 'https://api.example.com';
+
+        container.innerHTML = currentEndpoints.slice(0, 200).map((ep, i) => {
+            const curl = generateCurl(ep, baseUrl);
+            return `
+                <div class="curl-item" data-path="${esc(ep.path.toLowerCase())}">
+                    <div class="curl-item-header" onclick="toggleCurl(${i})">
+                        <span class="toggle" id="curl-toggle-${i}">▶</span>
+                        <span class="method-badge method-${ep.method}">${ep.method}</span>
+                        <span class="path-text" style="font-size:12px">${esc(ep.path)}</span>
+                        <button class="copy-btn" style="margin-left:auto" onclick="event.stopPropagation(); copyCurl(${i})">Copy</button>
+                    </div>
+                    <div class="curl-item-body" id="curl-body-${i}">
+                        <pre id="curl-text-${i}">${esc(curl)}</pre>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function generateCurl(ep, baseUrl) {
+        // Replace path params with sample values
+        let path = ep.path.replace(/\{([^}]+)\}/g, (_, name) => {
+            const param = ep.parameters.find(p => p.name === name);
+            if (param?.type === 'integer' || param?.type === 'number') return '1';
+            return 'example';
+        });
+
+        let curl = `curl -X ${ep.method} \\\n  '${baseUrl}${path}'`;
+
+        // Add query params
+        const queryParams = ep.parameters.filter(p => p.in === 'query').slice(0, 5);
+        if (queryParams.length > 0) {
+            const qs = queryParams.map(p => `${p.name}=${p.type === 'integer' ? '1' : 'value'}`).join('&');
+            curl = `curl -X ${ep.method} \\\n  '${baseUrl}${path}?${qs}'`;
+        }
+
+        // Add headers
+        curl += ` \\\n  -H 'Accept: application/json'`;
+
+        // Add body for write methods
+        if (['POST', 'PUT', 'PATCH'].includes(ep.method)) {
+            curl += ` \\\n  -H 'Content-Type: application/json'`;
+            const body = ep.responseSchema ? generateSampleValue(ep.responseSchema, currentSpec) : { key: 'value' };
+            curl += ` \\\n  -d '${JSON.stringify(body, null, 2)}'`;
+        }
+
+        return curl;
+    }
+
+    function toggleCurl(i) {
+        const body = document.getElementById(`curl-body-${i}`);
+        const toggle = document.getElementById(`curl-toggle-${i}`);
+        body.classList.toggle('open');
+        toggle.classList.toggle('open');
+    }
+
+    function copyCurl(i) {
+        const text = document.getElementById(`curl-text-${i}`).textContent;
+        navigator.clipboard.writeText(text);
+    }
+
+    function filterCurls() {
+        const search = (document.getElementById('curl-search')?.value || '').toLowerCase();
+        document.querySelectorAll('.curl-item').forEach(item => {
+            const path = item.dataset.path;
+            item.style.display = !search || path.includes(search) ? '' : 'none';
+        });
+    }
+
+    // =====================
+    // RENDER: EXPRESS SERVER CODE
+    // =====================
+    function renderServerCode() {
+        const apiName = (currentSpec.info?.title || 'cloned-api').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const version = currentSpec.info?.version || '1.0.0';
+
+        // Generate server.js
+        let serverCode = `const express = require('express');\nconst cors = require('cors');\n\nconst app = express();\nconst PORT = process.env.PORT || 3000;\n\napp.use(cors());\napp.use(express.json());\n\n`;
+        serverCode += `// ${currentSpec.info?.title || 'API'} Mock Server\n`;
+        serverCode += `// Generated by ClonePoint (devbook.digital/clonepoint)\n`;
+        serverCode += `// ${currentEndpoints.length} endpoints\n\n`;
+
+        // Group by first path segment for comments
+        const grouped = {};
+        currentEndpoints.forEach(ep => {
+            const tag = ep.tags?.[0] || ep.path.split('/').filter(Boolean)[0] || 'root';
+            if (!grouped[tag]) grouped[tag] = [];
+            grouped[tag].push(ep);
+        });
+
+        // Limit to 100 endpoints for readability
+        let epCount = 0;
+        for (const [tag, endpoints] of Object.entries(grouped)) {
+            if (epCount >= 100) {
+                serverCode += `\n// ... and ${currentEndpoints.length - epCount} more endpoints\n`;
+                break;
+            }
+
+            serverCode += `\n// ── ${tag} ──\n`;
+
+            for (const ep of endpoints) {
+                if (epCount >= 100) break;
+                const method = ep.method.toLowerCase();
+                const expressPath = ep.path.replace(/\{([^}]+)\}/g, ':$1');
+                const sampleResponse = ep.responseSchema
+                    ? generateSampleValue(ep.responseSchema, currentSpec)
+                    : { message: 'OK' };
+
+                serverCode += `\napp.${method}('${expressPath}', (req, res) => {\n`;
+                if (ep.summary) serverCode += `  // ${ep.summary.substring(0, 80)}\n`;
+                serverCode += `  res.json(${JSON.stringify(sampleResponse, null, 4).split('\n').map((l, i) => i === 0 ? l : '  ' + l).join('\n')});\n`;
+                serverCode += `});\n`;
+                epCount++;
+            }
+        }
+
+        serverCode += `\napp.listen(PORT, () => {\n  console.log(\`Mock server running on port \${PORT}\`);\n});\n`;
+
+        // Generate package.json
+        const pkgJson = {
+            name: apiName + '-mock',
+            version: version,
+            description: `Mock server for ${currentSpec.info?.title || 'API'} — generated by ClonePoint`,
+            main: 'server.js',
+            scripts: {
+                start: 'node server.js',
+                dev: 'node server.js'
+            },
+            dependencies: {
+                express: '^4.18.2',
+                cors: '^2.8.5'
+            }
+        };
+
+        // Generate README
+        const readme = `# ${currentSpec.info?.title || 'API'} Mock Server
+
+Generated by [ClonePoint](https://devbook.digital/clonepoint) on ${new Date().toISOString().split('T')[0]}.
+
+## Quick Start
+
+\`\`\`bash
+npm install
+npm start
+\`\`\`
+
+Server runs on **http://localhost:3000** by default.
+
+## Endpoints
+
+${currentEndpoints.length} endpoints mocked:
+
+| Method | Path |
+|--------|------|
+${currentEndpoints.slice(0, 50).map(ep => `| ${ep.method} | \`${ep.path}\` |`).join('\n')}
+${currentEndpoints.length > 50 ? `\n*...and ${currentEndpoints.length - 50} more*` : ''}
+
+## Customization
+
+Edit \`server.js\` to modify response data, add middleware, or connect to a real database.
+
+## License
+
+MIT
+`;
+
+        document.getElementById('server-code').textContent = serverCode;
+        document.getElementById('package-code').textContent = JSON.stringify(pkgJson, null, 2);
+        document.getElementById('readme-code').textContent = readme;
+    }
+
+    // =====================
+    // DOWNLOAD ZIP
+    // =====================
+    async function downloadZip() {
+        if (!currentSpec || !currentEndpoints.length) return;
+        const apiName = (currentSpec.info?.title || 'cloned-api').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+        const zip = new JSZip();
+        const folder = zip.folder(apiName + '-mock');
+
+        folder.file('server.js', document.getElementById('server-code').textContent);
+        folder.file('package.json', document.getElementById('package-code').textContent);
+        folder.file('README.md', document.getElementById('readme-code').textContent);
+
+        // Add .gitignore
+        folder.file('.gitignore', 'node_modules/\n.env\n');
+
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = apiName + '-mock.zip';
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    // =====================
+    // TABS
+    // =====================
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tabId));
+    }
+
+    // =====================
+    // UI STATES
+    // =====================
+    function showWelcome() {
+        document.getElementById('state-welcome').style.display = '';
+        document.getElementById('state-loading').style.display = 'none';
+        document.getElementById('state-results').style.display = 'none';
+    }
+
+    function showLoading(text) {
+        document.getElementById('state-welcome').style.display = 'none';
+        document.getElementById('state-loading').style.display = '';
+        document.getElementById('state-results').style.display = 'none';
+        document.getElementById('loading-text').textContent = text || 'Loading...';
+    }
+
+    function showResults() {
+        document.getElementById('state-welcome').style.display = 'none';
+        document.getElementById('state-loading').style.display = 'none';
+        document.getElementById('state-results').style.display = '';
+    }
+
+    function showError(msg) {
+        document.getElementById('state-welcome').style.display = 'none';
+        document.getElementById('state-loading').style.display = 'none';
+        document.getElementById('state-results').style.display = 'none';
+
+        const area = document.getElementById('content-area');
+        // Remove old errors
+        area.querySelectorAll('.error-banner').forEach(e => e.remove());
+        const errDiv = document.createElement('div');
+        errDiv.className = 'error-banner';
+        errDiv.textContent = msg;
+        area.prepend(errDiv);
+
+        // Show welcome below error
+        document.getElementById('state-welcome').style.display = '';
+    }
+
+    // =====================
+    // UTILITIES
+    // =====================
+    function esc(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    function copyCode(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        navigator.clipboard.writeText(text);
+    }
+
+    function timeAgo(dateStr) {
+        const diff = Date.now() - new Date(dateStr).getTime();
+        const mins = Math.floor(diff / 60000);
+        if (mins < 1) return 'just now';
+        if (mins < 60) return mins + 'm ago';
+        const hours = Math.floor(mins / 60);
+        if (hours < 24) return hours + 'h ago';
+        const days = Math.floor(hours / 24);
+        return days + 'd ago';
+    }
+
+    // Enter key triggers clone
+    document.getElementById('spec-url').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') cloneSpec();
+    });
+
+    // =====================
+    // INIT
+    // =====================
+    loadProjects();
+    </script>
+</body>
+</html>

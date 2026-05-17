@@ -55,7 +55,7 @@ app.use(express.text({ limit: '2mb' }));
 
 // No-cache for HTML
 app.use((req, res, next) => {
-  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login' || req.path === '/pricing' || req.path === '/clonepoint' || req.path.startsWith('/blog')) {
+  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login' || req.path === '/pricing' || req.path === '/clonepoint' || req.path === '/clonepoint/app' || req.path.startsWith('/blog')) {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   }
   next();
@@ -807,6 +807,170 @@ app.post('/api/environments/:id/activate', async (req, res) => {
   } catch (err) {
     console.error('Error activating environment:', err);
     res.status(500).json({ error: 'Failed to activate environment' });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+// =====================
+// CLONEPOINT API
+// =====================
+
+// ClonePoint app page
+app.get('/clonepoint/app', (req, res) => {
+  const htmlPath = path.join(__dirname, 'public', 'clonepoint-app.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('ClonePoint app not found');
+  }
+});
+
+// Fetch a spec URL (avoids CORS issues)
+app.post('/api/clonepoint/fetch-spec', async (req, res) => {
+  const { url: specUrl } = req.body;
+  if (!specUrl) return res.status(400).json({ error: 'URL is required' });
+
+  try {
+    const parsedUrl = new URL(specUrl);
+    const isHttps = parsedUrl.protocol === 'https:';
+    const transport = isHttps ? https : http;
+
+    const fetchPromise = new Promise((resolve, reject) => {
+      const options = {
+        hostname: parsedUrl.hostname,
+        port: parsedUrl.port || (isHttps ? 443 : 80),
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json, application/yaml, text/yaml, */*',
+          'User-Agent': 'ClonePoint/1.0'
+        },
+        timeout: 30000
+      };
+
+      const proxyReq = transport.request(options, (proxyRes) => {
+        // Follow redirects (up to 5)
+        if ([301, 302, 307, 308].includes(proxyRes.statusCode) && proxyRes.headers.location) {
+          resolve({ redirect: proxyRes.headers.location });
+          return;
+        }
+
+        const chunks = [];
+        proxyRes.on('data', (chunk) => chunks.push(chunk));
+        proxyRes.on('end', () => {
+          const body = Buffer.concat(chunks).toString('utf8');
+          resolve({ status: proxyRes.statusCode, body, contentType: proxyRes.headers['content-type'] || '' });
+        });
+      });
+
+      proxyReq.on('timeout', () => { proxyReq.destroy(); reject(new Error('Timeout')); });
+      proxyReq.on('error', reject);
+      proxyReq.end();
+    });
+
+    let result = await fetchPromise;
+
+    // Follow up to 5 redirects
+    let redirectCount = 0;
+    while (result.redirect && redirectCount < 5) {
+      redirectCount++;
+      const redirectUrl = new URL(result.redirect, specUrl);
+      const isRedirectHttps = redirectUrl.protocol === 'https:';
+      const redirectTransport = isRedirectHttps ? https : http;
+
+      result = await new Promise((resolve, reject) => {
+        const req2 = redirectTransport.request({
+          hostname: redirectUrl.hostname,
+          port: redirectUrl.port || (isRedirectHttps ? 443 : 80),
+          path: redirectUrl.pathname + redirectUrl.search,
+          method: 'GET',
+          headers: { 'Accept': 'application/json, application/yaml, text/yaml, */*', 'User-Agent': 'ClonePoint/1.0' },
+          timeout: 30000
+        }, (proxyRes) => {
+          if ([301, 302, 307, 308].includes(proxyRes.statusCode) && proxyRes.headers.location) {
+            resolve({ redirect: proxyRes.headers.location });
+            return;
+          }
+          const chunks = [];
+          proxyRes.on('data', (chunk) => chunks.push(chunk));
+          proxyRes.on('end', () => resolve({ status: proxyRes.statusCode, body: Buffer.concat(chunks).toString('utf8'), contentType: proxyRes.headers['content-type'] || '' }));
+        });
+        req2.on('timeout', () => { req2.destroy(); reject(new Error('Timeout')); });
+        req2.on('error', reject);
+        req2.end();
+      });
+    }
+
+    if (result.redirect) return res.status(400).json({ error: 'Too many redirects' });
+    if (result.status >= 400) return res.status(400).json({ error: `Spec URL returned HTTP ${result.status}` });
+
+    res.json({ content: result.body, contentType: result.contentType });
+  } catch (err) {
+    console.error('Fetch spec error:', err);
+    res.status(400).json({ error: `Failed to fetch spec: ${err.message}` });
+  }
+});
+
+// List user's ClonePoint projects
+app.get('/api/clonepoint/projects', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, name, spec_url, endpoints_count, created_at, updated_at FROM clonepoint_projects WHERE user_id = $1 ORDER BY updated_at DESC',
+      [req.userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error listing clonepoint projects:', err);
+    res.status(500).json({ error: 'Failed to list projects' });
+  }
+});
+
+// Save a ClonePoint project
+app.post('/api/clonepoint/projects', async (req, res) => {
+  const { name, spec_url, spec_data, endpoints_count } = req.body;
+  if (!name) return res.status(400).json({ error: 'Name is required' });
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO clonepoint_projects (user_id, name, spec_url, spec_data, endpoints_count)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [req.userId, name.trim(), spec_url || null, spec_data ? JSON.stringify(spec_data) : null, endpoints_count || 0]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error saving clonepoint project:', err);
+    res.status(500).json({ error: 'Failed to save project' });
+  }
+});
+
+// Get a single project with full spec data
+app.get('/api/clonepoint/projects/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM clonepoint_projects WHERE id = $1 AND user_id = $2',
+      [req.params.id, req.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Project not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error getting clonepoint project:', err);
+    res.status(500).json({ error: 'Failed to get project' });
+  }
+});
+
+// Delete a project
+app.delete('/api/clonepoint/projects/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'DELETE FROM clonepoint_projects WHERE id = $1 AND user_id = $2 RETURNING id',
+      [req.params.id, req.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Project not found' });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error deleting clonepoint project:', err);
+    res.status(500).json({ error: 'Failed to delete project' });
   }
 });
 
