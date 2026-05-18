@@ -55,7 +55,7 @@ app.use(express.text({ limit: '2mb' }));
 
 // No-cache for HTML
 app.use((req, res, next) => {
-  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login' || req.path === '/pricing' || req.path === '/clonepoint' || req.path === '/clonepoint/app' || req.path.startsWith('/blog')) {
+  if (req.path.endsWith('.html') || req.path === '/' || req.path === '/app' || req.path === '/login' || req.path === '/pricing' || req.path === '/privacy' || req.path === '/terms' || req.path === '/clonepoint' || req.path === '/clonepoint/app' || req.path.startsWith('/blog')) {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   }
   next();
@@ -96,6 +96,26 @@ app.get('/pricing', (req, res) => {
     res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
   } else {
     res.status(404).send('Pricing page not found');
+  }
+});
+
+// Privacy policy
+app.get('/privacy', (req, res) => {
+  const htmlPath = path.join(__dirname, 'public', 'privacy.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('Privacy policy not found');
+  }
+});
+
+// Terms of use
+app.get('/terms', (req, res) => {
+  const htmlPath = path.join(__dirname, 'public', 'terms.html');
+  if (fs.existsSync(htmlPath)) {
+    res.type('html').send(fs.readFileSync(htmlPath, 'utf8'));
+  } else {
+    res.status(404).send('Terms of use not found');
   }
 });
 
