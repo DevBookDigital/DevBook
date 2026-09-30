@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — DevBook</title>
+    <meta name="description" content="DevBook Privacy Policy. How we collect, use, and protect your data.">
+    <link rel="canonical" href="https://devbook.digital/privacy">
+    <meta property="og:title" content="Privacy Policy — DevBook">
+    <meta property="og:url" content="https://devbook.digital/privacy">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #22d68a;
+            --accent-dim: #1a9e66;
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;
+            display: flex; align-items: center; gap: 0.5rem;
+            color: var(--text); text-decoration: none;
+        }
+        .logo-mark {
+            width: 28px; height: 28px; background: var(--accent); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'JetBrains Mono', monospace; font-weight: 700;
+            font-size: 0.85rem; color: var(--bg);
+        }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.55rem 1.35rem; background: var(--accent); color: var(--bg);
+            border-radius: 8px; font-weight: 600; font-size: 0.9rem;
+            text-decoration: none; transition: background 0.15s;
+        }
+        .btn-primary:hover { background: var(--accent-dim); text-decoration: none; }
+
+        .content {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 8rem 2rem 5rem;
+        }
+        .content h1 {
+            font-size: 2.5rem; font-weight: 700; letter-spacing: -1.5px;
+            margin-bottom: 0.5rem;
+        }
+        .content .effective {
+            font-size: 0.9rem; color: var(--text-muted); margin-bottom: 3rem;
+        }
+        .content h2 {
+            font-size: 1.3rem; font-weight: 700; letter-spacing: -0.5px;
+            margin-top: 2.5rem; margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+        .content p, .content li {
+            font-size: 0.95rem; color: var(--text-muted); line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .content ul {
+            padding-left: 1.5rem; margin-bottom: 1rem;
+        }
+        .content li { margin-bottom: 0.4rem; }
+        .content strong { color: var(--text); }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        footer a { color: var(--text-muted); margin: 0 0.75rem; }
+        footer a:hover { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.25rem; }
+            .content { padding: 6rem 1.25rem 3rem; }
+            .content h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo" style="text-decoration:none">
+            <div class="logo-mark">D</div>
+            DevBook
+        </a>
+        <a href="/login" class="btn-primary">Start free →</a>
+    </nav>
+
+    <div class="content">
+        <h1>Privacy Policy</h1>
+        <p class="effective">Effective date: May 16, 2026 · Last updated: May 16, 2026</p>
+
+        <p>DevBook Digital ("DevBook," "we," "us," or "our") operates the website <strong>devbook.digital</strong> and the DevBook application. This Privacy Policy explains how we collect, use, disclose, and protect your information when you use our service.</p>
+
+        <h2>1. Information We Collect</h2>
+        <p><strong>Account information.</strong> When you create an account, we collect your name, email address, and (if you choose) a profile picture via your OAuth provider (Google or GitHub).</p>
+        <p><strong>Payment information.</strong> If you subscribe to a paid plan, payment is processed by our third-party payment processor (Stripe). We do not store your full credit card number on our servers. We receive and store your billing name, last four digits, expiration date, and billing address for receipt and support purposes.</p>
+        <p><strong>API keys you store.</strong> When you add API keys to your DevBook vault, those keys are encrypted using AES-256-GCM before being stored in our database. We cannot view or access your decrypted keys. Keys are decrypted only in memory at the moment you execute a request, and are never logged.</p>
+        <p><strong>Templates and request data.</strong> We store the templates you create (URL, method, headers, body structure) so you can reuse them. We <strong>do not</strong> log the contents of API responses or full request payloads sent through our proxy.</p>
+        <p><strong>Usage data.</strong> We collect basic analytics: pages visited, features used, browser type, device type, and approximate location (country/region). This data is aggregated and not tied to your API activity.</p>
+
+        <h2>2. How We Use Your Information</h2>
+        <ul>
+            <li>To provide, maintain, and improve DevBook</li>
+            <li>To process transactions and send billing-related communications</li>
+            <li>To send you product updates, security notices, and support messages</li>
+            <li>To respond to your inquiries and provide customer support</li>
+            <li>To detect, prevent, and address technical issues or abuse</li>
+        </ul>
+        <p>We <strong>do not</strong> sell, rent, or share your personal information with third parties for marketing purposes.</p>
+
+        <h2>3. How We Protect Your Information</h2>
+        <ul>
+            <li><strong>Encryption at rest:</strong> API keys are encrypted with AES-256-GCM before storage</li>
+            <li><strong>Encryption in transit:</strong> All connections use TLS 1.2 or higher</li>
+            <li><strong>No payload logging:</strong> Request bodies and API responses are not stored on our servers</li>
+            <li><strong>Access controls:</strong> Our team uses role-based access. Production database access is restricted and logged</li>
+            <li><strong>Infrastructure:</strong> DevBook is hosted on Render with data stored in Neon PostgreSQL, both SOC 2 compliant providers</li>
+        </ul>
+
+        <h2>4. Data Sharing</h2>
+        <p>We share data only in these limited circumstances:</p>
+        <ul>
+            <li><strong>Service providers:</strong> We use Stripe for payments, Render for hosting, and Neon for database services. These providers access only what they need to perform their services and are bound by their own privacy policies.</li>
+            <li><strong>Legal requirements:</strong> We may disclose your information if required by law, court order, or government request.</li>
+            <li><strong>Business transfers:</strong> If DevBook is acquired or merged with another company, your information may be transferred as part of that transaction. We will notify you before your data becomes subject to a different privacy policy.</li>
+        </ul>
+
+        <h2>5. Team Workspaces</h2>
+        <p>If you join a team workspace, your workspace admin can see your name and email. Shared templates and vault keys are accessible to all team members. When you are removed from a workspace, your access to shared resources is revoked immediately. Your personal account and any individual templates remain yours.</p>
+
+        <h2>6. Data Retention</h2>
+        <p>We retain your account data for as long as your account is active. If you delete your account, we will delete your personal data, templates, and stored API keys within 30 days. Some data may be retained in encrypted backups for up to 90 days.</p>
+
+        <h2>7. Your Rights</h2>
+        <p>You have the right to:</p>
+        <ul>
+            <li><strong>Access</strong> the personal data we hold about you</li>
+            <li><strong>Correct</strong> inaccurate information</li>
+            <li><strong>Delete</strong> your account and associated data</li>
+            <li><strong>Export</strong> your templates and data</li>
+            <li><strong>Opt out</strong> of non-essential communications</li>
+        </ul>
+        <p>To exercise any of these rights, email <a href="mailto:kristie@devbook.digital">kristie@devbook.digital</a> or call <a href="tel:+14058272316">(405) 827-2316</a>.</p>
+
+        <h2>8. Cookies</h2>
+        <p>We use essential cookies to keep you logged in and maintain your session. We do not use third-party advertising cookies. Analytics cookies, if used, are privacy-focused and do not track you across websites.</p>
+
+        <h2>9. Children's Privacy</h2>
+        <p>DevBook is not intended for children under 13. We do not knowingly collect information from children. If you believe a child has provided us with personal data, please contact us and we will delete it.</p>
+
+        <h2>10. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the new policy on this page and updating the "Last updated" date. Continued use of DevBook after changes constitutes acceptance of the updated policy.</p>
+
+        <h2>11. Contact Us</h2>
+        <p>If you have questions about this Privacy Policy or how we handle your data:</p>
+        <ul>
+            <li><strong>Email:</strong> <a href="mailto:kristie@devbook.digital">kristie@devbook.digital</a></li>
+            <li><strong>Phone:</strong> <a href="tel:+14058272316">(405) 827-2316</a></li>
+        </ul>
+        <p>DevBook Digital<br>United States</p>
+    </div>
+
+    <footer>
+        <span>&copy; 2026 DevBook Digital</span>
+        <a href="/">Home</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+    </footer>
+</body>
+</html>

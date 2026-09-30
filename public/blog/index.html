@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — DevBook</title>
+    <meta name="description" content="Articles on API testing, developer workflows, and building better tools.">
+    <link rel="canonical" href="https://devbook.digital/blog">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26;
+            --border: #2a2a3a; --text: #e8e8f0; --text-muted: #8888a0;
+            --accent: #22d68a; --accent-dim: #1a9e66; --accent-glow: rgba(34, 214, 138, 0.15);
+        }
+        body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        a { color: inherit; text-decoration: none; }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        .logo { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.5rem; }
+        .logo-mark { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.85rem; color: var(--bg); }
+        .nav-center { display: flex; gap: 2rem; }
+        .nav-center a { font-size: 0.9rem; color: var(--text-muted); transition: color 0.15s; }
+        .nav-center a:hover { color: var(--text); }
+        .btn-primary { display: inline-flex; align-items: center; padding: 0.55rem 1.35rem; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: background 0.15s; }
+        .btn-primary:hover { background: var(--accent-dim); }
+
+        .blog-hero { text-align: center; padding: 9rem 2rem 3rem; max-width: 700px; margin: 0 auto; }
+        .blog-hero h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 0.5rem; }
+        .blog-hero p { font-size: 1.1rem; color: var(--text-muted); }
+
+        .articles { max-width: 800px; margin: 0 auto; padding: 0 2rem 5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .article-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+            padding: 2rem; transition: border-color 0.2s; display: block;
+        }
+        .article-card:hover { border-color: var(--accent-dim); }
+        .article-card .tag { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .article-card h2 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.3px; }
+        .article-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+        .article-card .read-more { font-size: 0.9rem; color: var(--accent); font-weight: 600; }
+
+        footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; max-width: 1100px; margin: 0 auto; }
+        footer a { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .nav-center { display: none; }
+            .blog-hero { padding: 7rem 1.25rem 2rem; }
+            .blog-hero h1 { font-size: 2rem; }
+            .articles { padding: 0 1.25rem 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" style="text-decoration:none"><div class="logo"><div class="logo-mark">D</div>DevBook</div></a>
+        <div class="nav-center">
+            <a href="/#features">Features</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/blog">Blog</a>
+        </div>
+        <a href="/login" class="btn-primary">Try free →</a>
+    </nav>
+
+    <div class="blog-hero">
+        <h1>Blog</h1>
+        <p>Thoughts on API testing, developer tools, and building DevBook.</p>
+    </div>
+
+    <div class="articles">
+        <a href="/blog/postman-vs-devbook" class="article-card">
+            <div class="tag">Comparison</div>
+            <h2>Postman vs DevBook — An Honest Comparison</h2>
+            <p>A side-by-side look at two different approaches to API testing. Where Postman wins, where DevBook wins, and who each tool is really for.</p>
+            <span class="read-more">Read article →</span>
+        </a>
+
+        <a href="/blog/replaced-postman-with-browser-tab" class="article-card">
+            <div class="tag">Developer Story</div>
+            <h2>I Replaced Postman With a Browser Tab</h2>
+            <p>How one developer went from a 300MB desktop app to a browser tab for API testing — and why they're not going back.</p>
+            <span class="read-more">Read article →</span>
+        </a>
+
+        <a href="/blog/best-postman-alternatives-2025" class="article-card">
+            <div class="tag">Roundup</div>
+            <h2>5 Best Postman Alternatives in 2025</h2>
+            <p>The developer API testing landscape has changed. Here are the five tools worth considering if you're ready to move on from Postman.</p>
+            <span class="read-more">Read article →</span>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 DevBook Digital</p>
+        <p style="margin-top: 0.5rem;"><a href="/">Home</a> · <a href="/pricing">Pricing</a> · <a href="mailto:support@devbook.digital">Contact</a></p>
+    </footer>
+</body>
+</html>

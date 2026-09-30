@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Replaced Postman With a Browser Tab | DevBook Blog</title>
+    <meta name="description" content="How one developer went from a 300MB desktop app to a browser tab for all API testing — and why they're never going back.">
+    <link rel="canonical" href="https://devbook.digital/blog/replaced-postman-with-browser-tab">
+    <meta property="og:title" content="I Replaced Postman With a Browser Tab">
+    <meta property="og:description" content="How I went from a 300MB desktop app to a browser tab for API testing.">
+    <meta property="og:url" content="https://devbook.digital/blog/replaced-postman-with-browser-tab">
+    <meta property="og:type" content="article">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26; --border: #2a2a3a; --text: #e8e8f0; --text-muted: #8888a0; --accent: #22d68a; --accent-dim: #1a9e66; --accent-glow: rgba(34, 214, 138, 0.15); --orange: #ff8c42; }
+        body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        .logo { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.5rem; color: var(--text); }
+        .logo-mark { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.85rem; color: var(--bg); }
+        .btn-primary { display: inline-flex; align-items: center; padding: 0.55rem 1.35rem; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 0.9rem; }
+
+        article { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .breadcrumb { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .breadcrumb a { color: var(--text-muted); }
+        article h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 1rem; }
+        .meta { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 3rem; }
+        article h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin: 3rem 0 1rem; }
+        article p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        article strong { color: var(--text); }
+        article em { color: var(--text); font-style: italic; }
+        article code { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; background: var(--surface-2); padding: 0.15rem 0.4rem; border-radius: 4px; color: var(--orange); }
+        article blockquote { border-left: 3px solid var(--accent); padding: 1rem 1.5rem; margin: 1.5rem 0; background: var(--surface); border-radius: 0 8px 8px 0; }
+        article blockquote p { margin-bottom: 0; }
+
+        .cta-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; text-align: center; margin: 3rem 0; }
+        .cta-box h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text); }
+        .cta-box p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .cta-box .btn-primary { font-size: 1rem; padding: 0.7rem 2rem; }
+
+        footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; max-width: 720px; margin: 0 auto; }
+        @media (max-width: 768px) { article { padding: 6rem 1.25rem 3rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" style="text-decoration:none"><div class="logo"><div class="logo-mark">D</div>DevBook</div></a>
+        <a href="/login" class="btn-primary">Try free →</a>
+    </nav>
+
+    <article>
+        <div class="breadcrumb"><a href="/blog">← Blog</a></div>
+
+        <h1>I Replaced Postman With a Browser Tab</h1>
+        <div class="meta">May 2026 · 5 min read</div>
+
+        <p>I used Postman for three years. I had collections for every project, environment variables for staging vs production, and a workflow that was... fine. It worked. I never questioned it.</p>
+
+        <p>Then one morning, Postman asked me to log in again. My collections were "syncing." The app was using 800MB of RAM to display a text input and a JSON response. I opened Activity Monitor and stared at it for a second.</p>
+
+        <p><strong>800MB. To send a GET request.</strong></p>
+
+        <p>That was the moment I started looking for something else.</p>
+
+        <h2>The problem wasn't Postman's features</h2>
+
+        <p>Postman is genuinely powerful. It has test scripts, collection runners, mock servers, API documentation generators, team workspaces, version control, CI/CD integration. It does a lot.</p>
+
+        <p>But here's my confession: I used maybe 5% of those features.</p>
+
+        <p>My actual Postman workflow was:</p>
+
+        <blockquote><p>Open Postman → find the request → change a parameter → hit Send → read the response → repeat</p></blockquote>
+
+        <p>That's it. No scripts. No tests. No mock servers. I was using a Formula 1 car to drive to the grocery store.</p>
+
+        <h2>What I switched to</h2>
+
+        <p>I found <a href="https://devbook.digital">DevBook</a> — a browser-based API workbench. No desktop app. Just open a tab.</p>
+
+        <p>The first thing I noticed: it loaded in about 2 seconds. Not 2 seconds after a 300MB download. Two seconds total. Open tab. Ready.</p>
+
+        <p>The second thing I noticed: the template builder. You write your API request and mark the parts that change with <code>{{placeholders}}</code>. DevBook turns those into a fillable form. Instead of editing raw JSON, I fill in the blanks and hit send.</p>
+
+        <p>Here's what my OpenAI template looks like:</p>
+
+        <blockquote>
+            <p><code>POST https://api.openai.com/v1/chat/completions</code><br><br>
+            <code>{{model}}</code> → gpt-4o<br>
+            <code>{{prompt}}</code> → Explain quantum computing in one sentence<br>
+            <code>{{max_tokens}}</code> → 150</p>
+        </blockquote>
+
+        <p>The API key? It auto-fills from the vault because I named it <code>openai_key</code> and the template uses <code>{{openai_key}}</code>. I store the key once and it fills everywhere.</p>
+
+        <h2>What I lost</h2>
+
+        <p>I'm going to be honest about what I gave up:</p>
+
+        <p><strong>Scripting.</strong> Postman's pre-request and test scripts were useful for chaining requests. DevBook doesn't have scripting. When I need to chain requests, I write a quick Node script — which I probably should have been doing anyway.</p>
+
+        <p><strong>Collections.</strong> Postman's folder hierarchy was nice for organizing hundreds of endpoints. DevBook uses a flat, searchable list. For my workflow (15-20 templates) that's actually faster. For 200+ endpoints, I might miss folders.</p>
+
+        <p><strong>Team sync.</strong> DevBook has team features on the Pro plan, but Postman's team workspaces are more mature — forking, pull requests on collections, role-based access. If you have a large team with complex API workflows, Postman handles that better.</p>
+
+        <h2>What I gained</h2>
+
+        <p><strong>Speed.</strong> From "I want to test something" to "I'm looking at the response" went from ~30 seconds (open Postman, wait for load, find request, edit) to about 5 seconds (open tab, search template, fill in the blank, send).</p>
+
+        <p><strong>Simplicity.</strong> No more managing environments. No more workspace switching. No more "where did I save that request?" It's just a flat list of templates that I can search.</p>
+
+        <p><strong>RAM.</strong> A browser tab uses maybe 50MB. Postman was using 800MB. That matters on a laptop.</p>
+
+        <p><strong>Money.</strong> I was on Postman's team plan — $14/seat/month. For our 4-person team, that's $56/month. DevBook Pro is $19/month flat, unlimited users. We save $37/month. Not life-changing, but it's real money for no loss of functionality we actually used.</p>
+
+        <h2>Who should NOT switch</h2>
+
+        <p>If you rely on Postman's test scripts, collection runners, or mock servers — don't switch. Those features are genuinely useful and DevBook doesn't have them.</p>
+
+        <p>If you manage 500+ endpoints in organized collection hierarchies — Postman's folder system handles that better than a flat search list.</p>
+
+        <p>If you need GraphQL-specific tooling — Postman has it, DevBook doesn't.</p>
+
+        <h2>Who should</h2>
+
+        <p>If your Postman usage looks like mine — open it, send a request, read the response, close it — you're paying for (and loading) a lot of software you don't use.</p>
+
+        <p>DevBook is the tool I wished existed when I was using 5% of Postman. It does that 5% really well and doesn't bother with the other 95%.</p>
+
+        <p>Sometimes the best tool is the one that does less.</p>
+
+        <div class="cta-box">
+            <h3>Try it yourself</h3>
+            <p>Free for individuals. Open a tab, test an API, see if it fits your workflow.</p>
+            <a href="/login" class="btn-primary">Start free →</a>
+        </div>
+    </article>
+
+    <footer>
+        <p>&copy; 2026 DevBook Digital · <a href="/">Home</a> · <a href="/blog">Blog</a> · <a href="/pricing">Pricing</a></p>
+    </footer>
+</body>
+</html>

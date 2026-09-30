@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevBook — The API Workbench for Developers</title>
+    <title>DevBook — The API Workbench for Developers &amp; Teams</title>
     <meta name="description" content="DevBook is the modern API workbench developers actually use. No seat licensing. No bloated desktop app. API key vault, template builder, and split-screen response viewer — in your browser.">
-    <meta name="keywords" content="api testing tool, api workbench, free api client, api key manager, http client, postman alternative">
+    <meta name="keywords" content="api testing tool, api workbench, free api client, api key manager, http client, postman alternative, team api tool">
     <link rel="canonical" href="https://devbook.digital">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="DevBook — The API Workbench for Developers">
-    <meta property="og:description" content="Modern API workbench with API key vault, template builder, and split-screen response viewer — all in your browser.">
+    <meta property="og:title" content="DevBook — Test APIs in your browser. $19/mo flat for your whole team.">
+    <meta property="og:description" content="Browser-based API workbench with key vault, template builder, and split-screen response viewer. No download. No per-seat pricing. Free for individuals.">
     <meta property="og:url" content="https://devbook.digital">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DevBook">
+    <meta property="og:image" content="https://devbook.digital/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DevBook — The API Workbench for Developers">
-    <meta name="twitter:description" content="Modern API testing that gets out of your way.">
+    <meta name="twitter:title" content="DevBook — Test APIs in your browser. $19/mo flat for your whole team.">
+    <meta name="twitter:description" content="Browser-based API workbench with key vault, template builder, and split-screen viewer. No download. No per-seat pricing.">
+    <meta name="twitter:image" content="https://devbook.digital/og-image.png">
 
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
@@ -28,19 +32,19 @@
       "name": "DevBook",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "Modern API workbench for developers. API key vault, template builder with fillable fields, and split-screen response viewer — all in your browser.",
+      "offers": [
+        { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Free" },
+        { "@type": "Offer", "price": "19", "priceCurrency": "USD", "name": "Pro", "billingIncrement": "month" }
+      ],
+      "description": "Modern API workbench for developers and teams. API key vault, template builder with fillable fields, and split-screen response viewer — all in your browser.",
       "url": "https://devbook.digital",
       "featureList": [
-        "API key vault",
+        "API key vault with AES-256-GCM encryption",
         "Template builder with fillable fields",
         "Split-screen response viewer",
         "No installation required",
-        "Free forever"
+        "Free for individual developers",
+        "Flat $19/mo team pricing — unlimited seats"
       ]
     }
     </script>
@@ -63,6 +67,7 @@
             --orange: #ff8c42;
             --purple: #a78bfa;
             --red: #f87171;
+            --blue: #60a5fa;
         }
 
         body {
@@ -114,6 +119,19 @@
             color: var(--bg);
         }
 
+        .nav-center {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-center a {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.15s;
+        }
+
+        .nav-center a:hover { color: var(--text); }
+
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -136,6 +154,28 @@
             box-shadow: 0 0 30px var(--accent-glow);
         }
 
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.35rem;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+
+        .btn-secondary:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+        .btn-secondary.lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
         /* ── Hero ── */
         .hero {
             min-height: 100vh;
@@ -144,7 +184,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 8rem 2rem 5rem;
+            padding: 8rem 2rem 4rem;
             position: relative;
         }
 
@@ -189,9 +229,9 @@
         }
 
         h1 {
-            font-size: clamp(2.6rem, 6.5vw, 5rem);
+            font-size: clamp(2.6rem, 6.5vw, 4.5rem);
             font-weight: 700;
-            line-height: 1.05;
+            line-height: 1.08;
             letter-spacing: -2px;
             max-width: 880px;
             margin-bottom: 1.5rem;
@@ -201,9 +241,9 @@
         h1 .highlight { color: var(--accent); }
 
         .hero-sub {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--text-muted);
-            max-width: 520px;
+            max-width: 560px;
             line-height: 1.7;
             margin-bottom: 2.5rem;
         }
@@ -212,7 +252,7 @@
             display: flex;
             align-items: center;
             gap: 1.25rem;
-            margin-bottom: 3.5rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -220,14 +260,114 @@
         .hero-cta-note {
             font-size: 0.85rem;
             color: var(--text-muted);
+            margin-bottom: 3rem;
         }
 
         .hero-cta-note strong { color: var(--accent); }
+
+        /* ── Trust Proof Bar ── */
+        .trust-proof {
+            padding: 3.5rem 2rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .trust-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .trust-quote {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .trust-quote blockquote {
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 640px;
+            margin: 0 auto 0.75rem;
+        }
+
+        .trust-quote blockquote::before { content: '"'; color: var(--accent); font-size: 1.5rem; }
+        .trust-quote blockquote::after { content: '"'; color: var(--accent); font-size: 1.5rem; }
+
+        .trust-quote .attribution {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .trust-stats {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-stat {
+            text-align: center;
+        }
+
+        .trust-stat .number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .trust-stat .label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .trust-divider {
+            width: 1px;
+            height: 36px;
+            background: var(--border);
+        }
+
+        /* ── Product Demo ── */
+        .demo-section {
+            padding: 5rem 2rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .demo-section .section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .demo-section h2 {
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .demo-section .demo-desc {
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 540px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
 
         /* ── Mock UI ── */
         .mock-window {
             width: 100%;
             max-width: 780px;
+            margin: 0 auto;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -361,6 +501,82 @@
         .mock-bottom .key { color: var(--purple); }
         .mock-bottom .str { color: var(--orange); }
 
+        /* Demo annotations */
+        .demo-annotations {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 780px;
+            margin: 2rem auto 0;
+            text-align: left;
+        }
+
+        .demo-annotation {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .demo-annotation .ann-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--bg);
+            background: var(--accent);
+            min-width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-top: 2px;
+        }
+
+        .demo-annotation .ann-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .demo-annotation .ann-text strong {
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        /* Mock animation */
+        .mock-response-area {
+            opacity: 0;
+            animation: fadeInResponse 0.6s ease 2s forwards;
+        }
+
+        .mock-send-pulse {
+            animation: sendPulse 3s ease infinite;
+        }
+
+        @keyframes fadeInResponse {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes sendPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 214, 138, 0); }
+            40% { box-shadow: 0 0 0 6px rgba(34, 214, 138, 0.2); }
+        }
+
+        .mock-key-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent);
+            background: var(--accent-glow);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
         /* ── Sections ── */
         .section {
             padding: 6rem 2rem;
@@ -434,6 +650,14 @@
             line-height: 1.6;
         }
 
+        .pain-card .boss-note {
+            font-size: 0.8rem;
+            color: var(--blue);
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+
         /* ── Feature highlights ── */
         .features {
             display: grid;
@@ -479,6 +703,111 @@
             line-height: 1.6;
         }
 
+        /* ── For Decision Makers ── */
+        .decision-section {
+            padding: 5rem 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .decision-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .decision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .decision-content .section-label { color: var(--blue); }
+
+        .decision-points {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .decision-points li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .decision-points li .dp-icon {
+            font-size: 1.1rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .decision-points li strong {
+            color: var(--text);
+        }
+
+        .roi-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+
+        .roi-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .roi-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .roi-row:last-child { border-bottom: none; }
+
+        .roi-row .roi-label { color: var(--text-muted); }
+
+        .roi-row .roi-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .roi-row .roi-value.savings { color: var(--accent); }
+        .roi-row .roi-value.cost { color: var(--red); }
+        .roi-row .roi-value.devbook { color: var(--accent); }
+
+        .roi-total {
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .roi-total .roi-label {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .roi-total .roi-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
         /* ── Comparison table ── */
         .comparison-wrap {
             overflow-x: auto;
@@ -491,7 +820,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.95rem;
-            min-width: 580px;
+            min-width: 520px;
         }
 
         thead tr {
@@ -587,6 +916,178 @@
             line-height: 1.6;
         }
 
+        /* ── Security ── */
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .security-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+
+        .security-card:hover { border-color: var(--accent-dim); }
+
+        .security-card .sec-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .security-card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .security-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .security-card code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: var(--accent-glow);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .security-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .security-onboarding {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        .onboard-step {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .onboard-step .ob-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+        }
+
+        .onboard-step p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ── Pricing Preview ── */
+        .pricing-preview {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-preview .section-label,
+        .pricing-preview .section-title {
+            text-align: center;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 700px;
+            margin: 2.5rem auto 0;
+        }
+
+        .pricing-card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            background: var(--bg);
+            text-align: left;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+            position: relative;
+        }
+
+        .pricing-tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--bg);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-card .price span {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .pricing-card .price-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 1.75rem;
+        }
+
+        .pricing-card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .pricing-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .pricing-card .btn-primary,
+        .pricing-card .btn-secondary { width: 100%; justify-content: center; }
+
         /* ── Closing CTA ── */
         .closing {
             text-align: center;
@@ -631,29 +1132,100 @@
             position: relative;
         }
 
-        /* ── Footer ── */
-        footer {
+        /* ── Founder Block ── */
+        .founder-block {
+            max-width: 700px;
+            margin: 0 auto;
             text-align: center;
-            padding: 3rem 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.85rem;
         }
 
-        footer a { color: var(--accent); }
+        .founder-avatar {
+            width: 72px;
+            height: 72px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--bg);
+            margin: 0 auto 1.25rem;
+        }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand .logo { margin-bottom: 1rem; }
+        .footer-brand p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; max-width: 280px; }
+
+        .footer-col h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            transition: color 0.15s;
+        }
+
+        .footer-col a:hover { color: var(--accent); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-bottom a { color: var(--text-muted); margin-left: 1.5rem; }
+        .footer-bottom a:hover { color: var(--accent); }
 
         /* ── Mobile ── */
         @media (max-width: 768px) {
             nav { padding: 1rem 1.25rem; }
-            .hero { padding: 7rem 1.25rem 4rem; }
+            .nav-center { display: none; }
+            .hero { padding: 7rem 1.25rem 3rem; }
             .section { padding: 4rem 1.25rem; }
             h1 { letter-spacing: -1px; }
             .pain-grid { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr; }
             .features { grid-template-columns: 1fr; }
+            .security-grid { grid-template-columns: 1fr; }
+            .security-card.full-width { grid-column: 1; }
+            .security-onboarding { grid-template-columns: 1fr; }
+            .pricing-cards { grid-template-columns: 1fr; max-width: 400px; }
             .mock-method-bar { flex-wrap: wrap; }
             .mock-url-field { min-width: 0; }
             .hero-cta-group { flex-direction: column; gap: 0.75rem; }
+            .trust-stats { gap: 1.5rem; }
+            .trust-divider { display: none; }
+            .demo-annotations { grid-template-columns: 1fr; }
+            .decision-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
         }
     </style>
 </head>
@@ -661,26 +1233,75 @@
 
     <!-- ── Nav ── -->
     <nav>
-        <div class="logo">
-            <div class="logo-mark">D</div>
-            DevBook
+        <a href="/" style="text-decoration:none">
+            <div class="logo">
+                <div class="logo-mark">D</div>
+                DevBook
+            </div>
+        </a>
+        <div class="nav-center">
+            <a href="#product-demo">Demo</a>
+            <a href="#features">Features</a>
+            <a href="#security">Security</a>
+            <a href="/clonepoint">ClonePoint</a>
+            <a href="/pricing">Pricing</a>
+            <a href="mailto:kristie@devbook.digital">Contact</a>
         </div>
-        <a href="/login" class="btn-primary">Start your 2-week free trial →</a>
+        <a href="/login" class="btn-primary">Start free →</a>
     </nav>
 
     <!-- ── Hero ── -->
     <section class="hero">
         <div class="hero-badge">
             <span class="dot"></span>
-            2-week free trial — no credit card required
+            14-day free trial · No credit card required
         </div>
-        <h1>The API workbench that <span class="highlight">doesn't waste your time</span></h1>
-        <p class="hero-sub">Store your keys once. Build request templates with fillable fields. Get answers in a clean split-screen interface. No $14/seat pricing. No download.</p>
+        <h1>Your team's API workbench. <span class="highlight">$19/mo flat.</span></h1>
+        <p class="hero-sub">One browser tab replaces your team's entire API testing setup. Shared key vault, reusable templates, split-screen viewer. No desktop app. No per-seat pricing. Zero onboarding time.</p>
 
         <div class="hero-cta-group">
-            <a href="/login" class="btn-primary lg">Start your 2-week free trial →</a>
-            <span class="hero-cta-note"><strong>No credit card required</strong> &mdash; start in 30 seconds</span>
+            <a href="/login" class="btn-primary lg">Start free →</a>
+            <a href="#product-demo" class="btn-secondary lg">See it in action ↓</a>
         </div>
+        <p class="hero-cta-note">14-day free trial · No credit card · <strong>Solo $3/mo · Teams $19/mo flat</strong></p>
+    </section>
+
+    <!-- ── Trust Proof ── -->
+    <section class="trust-proof">
+        <div class="trust-inner">
+            <div class="trust-quote">
+                <blockquote>I was paying $70/month for Postman seats my team barely used. DevBook does what we actually need for a fraction of the cost. Took five minutes to get everyone set up.</blockquote>
+                <div class="attribution">— Early access user, 5-person dev team</div>
+            </div>
+            <div class="trust-stats">
+                <div class="trust-stat">
+                    <div class="number">100%</div>
+                    <div class="label">Browser-based — no download</div>
+                </div>
+                <div class="trust-divider"></div>
+                <div class="trust-stat">
+                    <div class="number">$19</div>
+                    <div class="label">Flat price — unlimited seats</div>
+                </div>
+                <div class="trust-divider"></div>
+                <div class="trust-stat">
+                    <div class="number">AES-256</div>
+                    <div class="label">Encryption for stored keys</div>
+                </div>
+                <div class="trust-divider"></div>
+                <div class="trust-stat">
+                    <div class="number">100+</div>
+                    <div class="label">Developers already using DevBook</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Product Demo ── -->
+    <section class="demo-section" id="product-demo">
+        <div class="section-label">See it in action</div>
+        <h2>Build a template. Fill in the blanks. Hit send.</h2>
+        <p class="demo-desc">This is a real DevBook template for the OpenAI API. Variables become fillable fields. Your API key auto-fills from the vault. Response appears below.</p>
 
         <div class="mock-window">
             <div class="mock-titlebar">
@@ -694,9 +1315,13 @@
                     <div class="mock-method-bar">
                         <span class="mock-method">POST</span>
                         <div class="mock-url-field">https://api.openai.com/v1/chat/completions</div>
-                        <span class="mock-send">Send</span>
+                        <span class="mock-send mock-send-pulse">Send</span>
                     </div>
                     <div class="mock-fields">
+                        <div class="mock-field-row">
+                            <span class="mock-label">{{api_key}}</span>
+                            <span class="mock-input">••••••••••••<span class="mock-key-badge">🔐 from vault</span></span>
+                        </div>
                         <div class="mock-field-row">
                             <span class="mock-label">{{model}}</span>
                             <span class="mock-input">gpt-4o</span>
@@ -705,17 +1330,13 @@
                             <span class="mock-label">{{prompt}}</span>
                             <span class="mock-input">Explain quantum computing in one sentence</span>
                         </div>
-                        <div class="mock-field-row">
-                            <span class="mock-label">{{max_tokens}}</span>
-                            <span class="mock-input">150</span>
-                        </div>
                     </div>
                 </div>
                 <div class="mock-divider">
                     <span class="mock-divider-label">Response</span>
                 </div>
-                <div class="mock-bottom">
-                    <span class="status">200 OK</span> &middot; 342ms<br>
+                <div class="mock-bottom mock-response-area">
+                    <span class="status">200 OK</span> · 342ms<br>
                     {<br>
                     &nbsp;&nbsp;<span class="key">"id"</span>: <span class="str">"chatcmpl-9x..."</span>,<br>
                     &nbsp;&nbsp;<span class="key">"choices"</span>: [{ <span class="key">"message"</span>: {<br>
@@ -725,68 +1346,224 @@
                 </div>
             </div>
         </div>
+
+        <div class="demo-annotations">
+            <div class="demo-annotation">
+                <span class="ann-num">1</span>
+                <div class="ann-text">
+                    <strong>Auto-filled keys</strong>
+                    API keys come from your encrypted vault — never pasted in chat or shared in plain text.
+                </div>
+            </div>
+            <div class="demo-annotation">
+                <span class="ann-num">2</span>
+                <div class="ann-text">
+                    <strong>Fillable fields</strong>
+                    <span class="mono" style="color:var(--orange)">{{variables}}</span> become form inputs. Your team fills in the blanks and hits send.
+                </div>
+            </div>
+            <div class="demo-annotation">
+                <span class="ann-num">3</span>
+                <div class="ann-text">
+                    <strong>Instant response</strong>
+                    Status code, timing, and formatted body appear in a split-screen view.
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- ── Pain Points ── -->
+    <!-- ── Why Teams Switch ── -->
     <section class="section">
-        <div class="section-label">Why developers switch</div>
-        <h2 class="section-title">Done with the status quo?</h2>
-        <p class="section-desc">The popular API tools come with baggage. DevBook skips all of it.</p>
+        <div class="section-label">Why teams switch</div>
+        <h2 class="section-title">The tools you have are costing you more than money</h2>
+        <p class="section-desc">Per-seat pricing, bloated apps, and scattered credentials slow your team down. DevBook fixes all three.</p>
 
         <div class="pain-grid">
             <div class="pain-card">
                 <div class="pain-icon">💸</div>
-                <h3>No $14/seat pricing</h3>
-                <p>Postman charges per seat, per month. Teams of 5 pay $70/mo for what should be a developer utility. DevBook is free — no seats, no tiers, no surprises.</p>
+                <h3>Stop paying per seat</h3>
+                <p>Postman charges $14/user/month. A 10-person team pays $140/mo. DevBook Pro is $19/mo flat — add your whole team.</p>
+                <div class="boss-note">📊 For managers: predictable cost that doesn't grow with headcount.</div>
             </div>
             <div class="pain-card">
                 <div class="pain-icon">📦</div>
-                <h3>No bloated desktop app</h3>
-                <p>Postman's Electron app ships 300MB+ and launches like it's loading an IDE. DevBook is a web app. Open a tab, start working. Close it when you're done.</p>
+                <h3>No install, no IT tickets</h3>
+                <p>DevBook runs in the browser. No 300MB desktop app to install, no admin permissions needed, no version update cycles.</p>
+                <div class="boss-note">📊 For managers: zero deployment overhead. Link your team a URL.</div>
             </div>
             <div class="pain-card">
-                <div class="pain-icon">🔒</div>
-                <h3>No cloud lock-in</h3>
-                <p>Postman syncs your collections, keys, and environments to their servers. DevBook stores your API keys in your own account. Your requests stay yours.</p>
+                <div class="pain-icon">🔑</div>
+                <h3>API keys in one vault</h3>
+                <p>Stop sharing keys in Slack DMs and .env files. One encrypted vault, one source of truth. Keys auto-fill into templates.</p>
+                <div class="boss-note">📊 For managers: centralized credential management with audit-ready encryption.</div>
             </div>
         </div>
     </section>
 
     <!-- ── Feature Highlights ── -->
-    <section class="section" style="padding-top: 0;">
+    <section class="section" id="features" style="padding-top: 0;">
         <div class="section-label">Features</div>
-        <h2 class="section-title">Built for how you actually work</h2>
-        <p class="section-desc">Every API tool wants to be a platform. DevBook wants to be a tool.</p>
+        <h2 class="section-title">Built for how developers actually work</h2>
+        <p class="section-desc">Not a platform. A tool. Open a tab, build a request, get a response.</p>
 
         <div class="features">
             <div class="feature">
                 <div class="feature-icon">{}</div>
                 <h3>Template builder with fillable fields</h3>
-                <p>Mark dynamic parts with <span class="mono" style="color:var(--orange)">{{placeholders}}</span> and DevBook turns them into input fields automatically. Fill in the blanks, hit send. No raw JSON editing, no copy-paste errors.</p>
+                <p>Mark dynamic parts with <span class="mono" style="color:var(--orange)">{{placeholders}}</span> and DevBook turns them into input fields. Fill in the blanks, hit send. No raw JSON editing.</p>
             </div>
             <div class="feature">
                 <div class="feature-icon">#</div>
-                <h3>API key vault</h3>
-                <p>Store all your API keys in one secure place. DevBook matches key names to template variables automatically — your Stripe key fills every <span class="mono" style="color:var(--orange)">{{stripe_key}}</span> without extra work.</p>
+                <h3>Encrypted API key vault</h3>
+                <p>Store all your API keys in one secure place. DevBook matches key names to template variables automatically — your Stripe key fills every <span class="mono" style="color:var(--orange)">{{stripe_key}}</span>.</p>
             </div>
             <div class="feature">
                 <div class="feature-icon">/</div>
                 <h3>Split-screen response viewer</h3>
-                <p>Request on top. Response on the bottom — syntax-highlighted, status color-coded (200 green, 4xx orange, 5xx red), with timing in ms. Everything you need, nothing you don't.</p>
+                <p>Request on top, response on the bottom — syntax-highlighted, status color-coded, with timing in ms. Everything you need at a glance.</p>
             </div>
             <div class="feature">
-                <div class="feature-icon">Q</div>
-                <h3>Searchable request index</h3>
-                <p>Every template you save is indexed and searchable by name, method, and URL. Recall any previous request in seconds. No collections, no folders, no hierarchy to manage.</p>
+                <div class="feature-icon">👥</div>
+                <h3>Shared team workspace</h3>
+                <p>Templates and keys are shared across your team automatically. New devs are productive in minutes, not days. No collection imports or env file juggling.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── For Decision Makers ── -->
+    <section class="decision-section">
+        <div class="decision-inner">
+            <div class="decision-grid">
+                <div class="decision-content">
+                    <div class="section-label">For engineering managers</div>
+                    <h2 class="section-title" style="font-size: clamp(1.7rem, 3.5vw, 2.5rem);">Why your team should use DevBook</h2>
+                    <p class="section-desc" style="margin-bottom: 0;">Your developers need an API testing tool. You need it to be secure, affordable, and easy to roll out. DevBook is all three.</p>
+
+                    <ul class="decision-points">
+                        <li>
+                            <span class="dp-icon">💰</span>
+                            <div><strong>Flat pricing that scales</strong> $19/mo whether you have 3 developers or 30. No surprise invoices when you hire.</div>
+                        </li>
+                        <li>
+                            <span class="dp-icon">🔐</span>
+                            <div><strong>Credentials stay controlled</strong> API keys are encrypted with AES-256-GCM and stored in a shared vault. No more keys in Slack, email, or random .env files.</div>
+                        </li>
+                        <li>
+                            <span class="dp-icon">⚡</span>
+                            <div><strong>5-minute team onboarding</strong> Send your team a link. They sign up, access shared templates and keys instantly. No downloads, no IT involvement.</div>
+                        </li>
+                        <li>
+                            <span class="dp-icon">📋</span>
+                            <div><strong>Standardized workflows</strong> Shared templates mean every developer uses the same API calls. Less duplication, fewer mistakes, better consistency.</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div class="roi-card">
+                        <h3>💡 Cost comparison: 10-person team</h3>
+                        <div class="roi-row">
+                            <span class="roi-label">Postman (10 seats)</span>
+                            <span class="roi-value cost">$140/mo</span>
+                        </div>
+                        <div class="roi-row">
+                            <span class="roi-label">DevBook (unlimited seats)</span>
+                            <span class="roi-value devbook">$19/mo</span>
+                        </div>
+                        <div class="roi-total">
+                            <span class="roi-label">You save</span>
+                            <span class="roi-value">$1,452/yr</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1.25rem; text-align: center;">
+                        Questions about team setup or security?<br>
+                        <a href="mailto:kristie@devbook.digital" style="color: var(--accent); font-weight: 600;">kristie@devbook.digital</a><br>
+                        <a href="tel:+14058272316" style="color: var(--accent); font-weight: 600;">(405) 827-2316</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How it works ── -->
+    <section class="section" id="how-it-works">
+        <div class="section-label">How it works</div>
+        <h2 class="section-title">Three steps. Zero setup.</h2>
+        <p class="section-desc">No collections, no environments, no workspaces. Just the parts you actually use.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <h3>Add your API keys</h3>
+                <p>Paste your keys into the vault. They're encrypted with AES-256-GCM and auto-fill into every template that uses them.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <h3>Build a template</h3>
+                <p>Define your HTTP request with <span class="mono" style="color:var(--orange)">{{placeholders}}</span> for dynamic values. DevBook generates a clean fillable form.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <h3>Send and share</h3>
+                <p>Hit send, see your response instantly. Save the template so your whole team can reuse it — same request, same keys, no copy-pasting.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Security ── -->
+    <section class="section" id="security" style="padding-top: 0;">
+        <div class="section-label">Security &amp; compliance</div>
+        <h2 class="section-title">How we protect your credentials</h2>
+        <p class="section-desc">You're trusting DevBook with API keys and team data. Here's exactly how we handle them — no vague claims, just specifics.</p>
+
+        <div class="security-grid">
+            <div class="security-card">
+                <div class="sec-icon">🔐</div>
+                <h3>AES-256-GCM encryption at rest</h3>
+                <p>Every API key stored in your vault is encrypted with <code>AES-256-GCM</code> — the same standard used by AWS, banks, and government systems. Keys are decrypted only at the moment of use and never stored in plaintext.</p>
+            </div>
+            <div class="security-card">
+                <div class="sec-icon">🔒</div>
+                <h3>TLS encryption in transit</h3>
+                <p>All connections between your browser and DevBook use TLS 1.2+. Your requests, responses, and credentials are never transmitted unencrypted. We enforce HTTPS on all endpoints.</p>
+            </div>
+            <div class="security-card">
+                <div class="sec-icon">🚫</div>
+                <h3>No payload logging</h3>
+                <p>We never log your request bodies or API responses on our servers. Your data passes through to execute the request and is not stored, analyzed, or accessible to DevBook staff.</p>
+            </div>
+            <div class="security-card">
+                <div class="sec-icon">👥</div>
+                <h3>Team access controls</h3>
+                <p>When a team member leaves, remove them from your workspace. Their access to shared templates and the key vault is revoked immediately. You control who can see and use your credentials.</p>
+            </div>
+            <div class="security-card full-width">
+                <div class="sec-icon">🚀</div>
+                <h3>Team onboarding — how it actually works</h3>
+                <p style="margin-bottom: 1rem;">Getting your team set up takes minutes, not meetings. Here's the process:</p>
+                <div class="security-onboarding">
+                    <div class="onboard-step">
+                        <div class="ob-num">Step 1</div>
+                        <p><strong>You create a workspace</strong> and add your shared API keys to the vault. Only you control what keys are available.</p>
+                    </div>
+                    <div class="onboard-step">
+                        <div class="ob-num">Step 2</div>
+                        <p><strong>Invite your team</strong> by sharing a link. Each member signs up with their own account — no shared credentials.</p>
+                    </div>
+                    <div class="onboard-step">
+                        <div class="ob-num">Step 3</div>
+                        <p><strong>They start working</strong> immediately. Shared templates and vault keys are available from the first login. Nothing to configure.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- ── Comparison Table ── -->
     <section class="section" style="padding-top: 0;">
-        <div class="section-label">Comparison</div>
-        <h2 class="section-title">DevBook vs the alternatives</h2>
-        <p class="section-desc">How does DevBook stack up against the other API tools developers reach for?</p>
+        <div class="section-label">Quick comparison</div>
+        <h2 class="section-title">DevBook vs Postman</h2>
+        <p class="section-desc">Side-by-side on the things that actually affect your team and your budget.</p>
 
         <div class="comparison-wrap">
             <table>
@@ -795,65 +1572,42 @@
                         <th></th>
                         <th class="highlight-col">DevBook</th>
                         <th>Postman</th>
-                        <th>Bruno</th>
-                        <th>Hoppscotch</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Price</td>
-                        <td class="highlight-col" style="color:var(--accent);font-weight:700;">Free</td>
+                        <td>Team pricing</td>
+                        <td class="highlight-col" style="color:var(--accent);font-weight:700;">$19/mo flat</td>
                         <td>$14/seat/mo</td>
-                        <td>Free (desktop)</td>
-                        <td>Free / $9/mo</td>
                     </tr>
                     <tr>
-                        <td>No install required</td>
-                        <td class="highlight-col"><span class="check">✓</span></td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
+                        <td>10-person team cost</td>
+                        <td class="highlight-col" style="color:var(--accent);font-weight:700;">$19/mo</td>
+                        <td>$140/mo</td>
+                    </tr>
+                    <tr>
+                        <td>Install required</td>
+                        <td class="highlight-col"><span class="check">✓ None — browser</span></td>
+                        <td><span class="cross">✗ Desktop app</span></td>
                     </tr>
                     <tr>
                         <td>Template builder with fillable fields</td>
                         <td class="highlight-col"><span class="check">✓</span></td>
                         <td><span class="cross">✗</span></td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="cross">✗</span></td>
                     </tr>
                     <tr>
-                        <td>API key vault with auto-fill</td>
-                        <td class="highlight-col"><span class="check">✓</span></td>
-                        <td><span class="partial">~ env vars</span></td>
-                        <td><span class="partial">~ env vars</span></td>
-                        <td><span class="partial">~ env vars</span></td>
+                        <td>Encrypted key vault</td>
+                        <td class="highlight-col"><span class="check">✓ AES-256-GCM</span></td>
+                        <td><span class="partial">~ cloud env vars</span></td>
                     </tr>
                     <tr>
-                        <td>Split-screen response viewer</td>
-                        <td class="highlight-col"><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
+                        <td>Team onboarding time</td>
+                        <td class="highlight-col" style="color:var(--accent);">~5 minutes</td>
+                        <td>Download + configure</td>
                     </tr>
                     <tr>
-                        <td>Syntax-highlighted JSON responses</td>
+                        <td>No forced cloud sync</td>
                         <td class="highlight-col"><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Zero learning curve</td>
-                        <td class="highlight-col"><span class="check">✓</span></td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="partial">~</span></td>
-                        <td><span class="partial">~</span></td>
-                    </tr>
-                    <tr>
-                        <td>No cloud lock-in</td>
-                        <td class="highlight-col"><span class="check">✓</span></td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
                         <td><span class="cross">✗</span></td>
                     </tr>
                 </tbody>
@@ -861,44 +1615,118 @@
         </div>
     </section>
 
-    <!-- ── How it works ── -->
-    <section class="section" style="padding-top: 0;">
-        <div class="section-label">How it works</div>
-        <h2 class="section-title">Three steps. Zero learning curve.</h2>
-        <p class="section-desc">No collections. No environments. No workspaces. Just the parts of API testing you actually use.</p>
+    <!-- ── Pricing Preview ── -->
+    <section class="pricing-preview">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title">Simple pricing. No per-seat math.</h2>
+        <p class="section-desc" style="text-align: center; margin-left: auto; margin-right: auto;">Your whole team for less than one Postman seat.</p>
 
-        <div class="steps">
-            <div class="step">
-                <div class="step-num">01</div>
-                <h3>Add your API keys</h3>
-                <p>Paste your keys into the vault — Stripe, OpenAI, Twilio, whatever you use. Reference them with a variable name across every template. One entry, everywhere.</p>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Solo</h3>
+                <div class="price">$3 <span>/month</span></div>
+                <div class="price-note">14-day free trial · no credit card</div>
+                <ul>
+                    <li>25 saved templates</li>
+                    <li>10 API keys in vault</li>
+                    <li>Split-screen viewer</li>
+                    <li>All HTTP methods</li>
+                    <li>Unlimited requests</li>
+                </ul>
+                <a href="/login" class="btn-secondary">Start free trial →</a>
             </div>
-            <div class="step">
-                <div class="step-num">02</div>
-                <h3>Build a template</h3>
-                <p>Define your HTTP request and mark dynamic parts with <span class="mono" style="color:var(--orange)">{{placeholders}}</span>. DevBook generates a fillable form. No raw JSON editing, no config files.</p>
+            <div class="pricing-card featured">
+                <span class="pricing-tag">Teams</span>
+                <h3>Pro</h3>
+                <div class="price">$19 <span>/month</span></div>
+                <div class="price-note">Flat — unlimited team members</div>
+                <ul>
+                    <li>Everything in Free</li>
+                    <li>Unlimited templates</li>
+                    <li>Unlimited API keys</li>
+                    <li>Unlimited team members</li>
+                    <li>Shared templates &amp; vault</li>
+                    <li>Priority support</li>
+                </ul>
+                <a href="/login?plan=pro" class="btn-primary">Start 14-day Pro trial — no card needed →</a>
             </div>
-            <div class="step">
-                <div class="step-num">03</div>
-                <h3>Run and reuse</h3>
-                <p>Fill in the blanks, hit send, see your response instantly. Every template is saved and searchable. Build a library of the API calls your workflow depends on.</p>
-            </div>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">No credit card required · <a href="/pricing" style="color: var(--accent);">See full pricing details →</a></p>
+    </section>
+
+    <!-- ── Founder Block ── -->
+    <section class="section" style="padding-bottom: 2rem;">
+        <div class="founder-block">
+            <div class="section-label">Built by a real person</div>
+            <div class="founder-avatar">K</div>
+            <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 0.75rem;">Hey, I'm Kristie 👋</h2>
+            <p style="font-size: 1rem; color: var(--text-muted); line-height: 1.8; max-width: 560px; margin: 0 auto;">I built DevBook because I got frustrated with how complicated and expensive API testing tools have become. I'm a self-taught developer — my background is actually in fire science and sociology. I wanted a simple tool that lets you open a browser tab, test an API, and get back to work. That's DevBook.</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.25rem;">Questions about team setup, security, or migration?<br><a href="mailto:kristie@devbook.digital" style="color: var(--accent); font-weight: 600;">kristie@devbook.digital</a> · <a href="tel:+14058272316" style="color: var(--accent); font-weight: 600;">(405) 827-2316</a></p>
         </div>
     </section>
 
     <!-- ── Closing CTA ── -->
     <section class="closing">
-        <h2>Start your 2-week free trial</h2>
+        <h2>Open a tab. Test an API.</h2>
         <p>No download. No credit card. No seat licenses. The API workbench that gets out of your way.</p>
-        <a href="/login" class="btn-primary lg" style="position:relative;">Start your 2-week free trial →</a>
-        <p class="closing-note">No credit card required to get started</p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative;">
+            <a href="/login" class="btn-primary lg">Start free →</a>
+            <a href="mailto:kristie@devbook.digital" class="btn-secondary lg">Talk to the founder</a>
+        </div>
+        <p class="closing-note">14-day free trial · Solo $3/mo · Teams $19/mo flat · No credit card required</p>
     </section>
 
+    <!-- ── Footer ── -->
     <footer>
-        <p>&copy; DevBook</p>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <div class="logo-mark">D</div>
+                    DevBook
+                </div>
+                <p>The modern API workbench for developers and teams who just want to send a request and see what comes back.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <a href="#features">Features</a>
+                <a href="/pricing">Pricing</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#security">Security</a>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <a href="/blog">Blog</a>
+                <a href="/blog/postman-vs-devbook">Postman vs DevBook</a>
+                <a href="/blog/best-postman-alternatives-2025">Alternatives</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="mailto:kristie@devbook.digital">Talk to the founder</a>
+                <a href="tel:+14058272316">(405) 827-2316</a>
+                <a href="mailto:support@devbook.digital">support@devbook.digital</a>
+                <a href="https://github.com/DevBookDigital/DevBook" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 DevBook Digital</span>
+            <div>
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+            </div>
+        </div>
     </footer>
 
-    <!-- Analytics: add your own tracking snippet here if needed -->
+    <!-- Smooth scroll for anchor links -->
+    <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+    </script>
 
     <!-- Newo AI Chatbot -->
     <script defer src="https://static.newo.ai/newo-chat/web-chat.js" name="web-chat" data-client-secret="f8c07531-a735-4c35-ae02-77018e0471fb"></script>
